@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cash Flow BD — Admin</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f6f3;--card:#fff;--ink:#0d1b14;--muted:#7b8a99;--line:#e4ece7;--g1:#0e8a43;--g2:#26c95f;--gsoft:#e8f9ef;--gtxt:#0f8a45;
+  --red:#e5484d;--rsoft:#fde7e8;--y:#c98209;--ysoft:#fff3d1;--b:#2563eb;--bsoft:#e8f0ff;--p:#8b3fd9;--psoft:#f3e8ff;
+  --font:'Plus Jakarta Sans','Hind Siliguri','Noto Sans Bengali',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:10px 16px}
+.top img{width:36px;height:36px;border-radius:10px}
+.top b{font-size:16px;font-weight:800}.top small{display:block;color:var(--muted);font-size:11px}
+.top .sp{flex:1}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.tabs button{flex:none;padding:10px 16px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:700;color:#4b5a69}
+.tabs button.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent}
+.badge{display:inline-block;min-width:20px;padding:1px 7px;border-radius:99px;background:var(--red);color:#fff;font-size:11px;margin-left:6px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat small{color:var(--muted);font-size:12px;display:block}
+.stat b{display:block;font-size:26px;font-weight:800;margin:4px 0 2px;letter-spacing:-.5px}
+.stat span{font-size:11.5px;color:var(--muted)}
+.stat.g b{color:var(--gtxt)}.stat.r b{color:var(--red)}.stat.y b{color:var(--y)}.stat.b b{color:var(--b)}.stat.p b{color:var(--p)}
+h2{font-size:16px;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.charts{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.chart h3{margin:0 0 8px;font-size:13px;color:#4b5a69}
+.chart svg{width:100%;height:150px;display:block}
+.bar-lbl{font-size:9px;fill:#7b8a99}.bar-val{font-size:9.5px;font-weight:700;fill:#334155}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tools input,.tools select{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;min-width:0}
+.tools input{flex:1;min-width:180px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border-radius:11px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-weight:700;font-size:13px;white-space:nowrap}
+.btn.line{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.red{background:var(--red)}.btn.blue{background:var(--b)}.btn.sm{padding:6px 10px;font-size:12px;border-radius:9px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:16px}
+table{border-collapse:collapse;width:100%;min-width:860px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;font-size:13px}
+th{background:#f7faf8;color:#5b6b7b;font-size:11.5px;text-transform:uppercase;letter-spacing:.3px;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+tbody tr.click{cursor:pointer}tbody tr.click:hover{background:#f7fbf8}
+.pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.pill.ok{background:var(--gsoft);color:var(--gtxt)}.pill.no{background:var(--ysoft);color:var(--y)}.pill.bad{background:var(--rsoft);color:var(--red)}
+.pill.paid{background:var(--gsoft);color:var(--gtxt)}.pill.pending{background:var(--ysoft);color:var(--y)}.pill.rejected{background:var(--rsoft);color:var(--red)}
+.muted{color:var(--muted)}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap}
+.form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.form label{display:grid;gap:5px;font-weight:700;font-size:12.5px;color:#4b5a69}
+.form input,.form select{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;font-weight:500;color:var(--ink)}
+.msg{padding:10px 14px;border-radius:12px;margin:10px 0;font-weight:600;background:var(--gsoft);color:var(--gtxt)}
+.msg.err{background:var(--rsoft);color:var(--red)}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login .box{width:100%;max-width:360px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;text-align:center;box-shadow:0 20px 50px rgba(10,60,30,.10)}
+.login img{width:76px;height:76px;border-radius:20px;margin-bottom:10px}
+.login h1{margin:0 0 4px;font-size:22px}.login p{color:var(--muted);margin:0 0 16px}
+.login input{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;font-size:15px}
+.login .btn{width:100%;padding:13px}
+#modal{position:fixed;inset:0;background:rgba(10,20,15,.5);display:none;place-items:center;padding:14px;z-index:50}
+#modal.on{display:grid}
+.mbox{background:#fff;border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow:auto;padding:18px;position:relative}
+.mbox h3{margin:0 0 4px;font-size:18px}
+.x{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--bg);font-size:16px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
+.kv div{background:#f7faf8;border-radius:12px;padding:9px 11px}.kv small{display:block;color:var(--muted);font-size:11px}.kv b{font-size:14px}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+@media(max-width:600px){.wrap{padding:12px}.stat b{font-size:22px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<script>
+(function () {
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const tk = { get() { try { return localStorage.getItem('cf_admin'); } catch (_) { return null; } }, set(v) { try { v ? localStorage.setItem('cf_admin', v) : localStorage.removeItem('cf_admin'); } catch (_) {} } };
+const BD = 'Asia/Dhaka';
+const fdate = ts => ts ? new Date(ts).toLocaleDateString('en-GB', { timeZone: BD, day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+const ftime = ts => ts ? new Date(ts).toLocaleString('en-GB', { timeZone: BD, day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true }) : '—';
+const taka = n => '৳' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const ago = ts => { if (!ts) return '—'; const m = Math.floor((Date.now() - ts) / 60000); if (m < 1) return 'এইমাত্র'; if (m < 60) return m + ' মিনিট আগে'; const h = Math.floor(m / 60); if (h < 24) return h + ' ঘণ্টা আগে'; return Math.floor(h / 24) + ' দিন আগে'; };
+
+const S = { tab: 'dash', stats: null, users: null, uq: { q: '', filter: 'all', sort: 'joined', page: 1, size: 25 }, wd: null, wdStatus: 'pending', tasks: null, settings: null, msg: null };
+let timer = null;
+
+async function A(path, body) {
+  const r = await fetch('/admin/api/' + path, { method: body ? 'POST' : 'GET', headers: { 'Authorization': 'Bearer ' + (tk.get() || ''), 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (r.status === 401) { tk.set(null); renderLogin(); throw new Error('auth'); }
+  return r.json();
+}
+function toast(kind, text) { S.msg = { kind, text }; const el = $('#msg'); if (el) el.innerHTML = `<div class="msg ${kind === 'err' ? 'err' : ''}">${esc(text)}</div>`; clearTimeout(toast._t); toast._t = setTimeout(() => { S.msg = null; const e = $('#msg'); if (e) e.innerHTML = ''; }, 3500); }
+
+/* ───────── login ───────── */
+function renderLogin(err) {
+  clearInterval(timer);
+  $('#app').innerHTML = `<div class="login"><div class="box"><img src="/logo.svg" alt=""><h1>Cash Flow BD</h1><p>অ্যাডমিন প্যানেল</p>
+    ${err ? `<div class="msg err">${esc(err)}</div>` : ''}
+    <input id="pw" type="password" placeholder="অ্যাডমিন পাসওয়ার্ড" autocomplete="current-password"><button class="btn" id="go">লগইন</button></div></div>`;
+  const go = async () => {
+    let j = null;
+    try {
+      const r = await fetch('/admin/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: $('#pw').value }) });
+      j = await r.json();
+    } catch (_) { j = null; }
+    if (!j) return renderLogin('সার্ভার পাওয়া যায়নি। এই পেজটা সরাসরি/প্রিভিউতে খুললে চলবে না — server.js চালু করে তার /admin ঠিকানায় যান।');
+    if (j.ok) { tk.set(j.token); boot(); }
+    else renderLogin(j.error === 'admin_disabled' ? 'ADMIN_PASSWORD সেট করা নেই (.env ফাইল দেখুন)' : j.error === 'too_many' ? 'অনেকবার ভুল হয়েছে। ১০ মিনিট পরে চেষ্টা করুন।' : 'পাসওয়ার্ড ভুল');
+  };
+  $('#go').onclick = go; $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); };
+  if (err === undefined) fetch('/admin/api/settings').then(r => r.status === 503 ? renderLogin('ADMIN_PASSWORD সেট করা নেই (.env ফাইল দেখুন)') : 0).catch(() => {});
+}
+
+/* ───────── shell ───────── */
+function shell(inner) {
+  const p = S.stats ? S.stats.withdrawals.pending : 0;
+  const tab = (k, l, b) => `<button class="${S.tab === k ? 'on' : ''}" data-tab="${k}">${l}${b ? `<span class="badge">${b}</span>` : ''}</button>`;
+  $('#app').innerHTML = `<div class="top"><img src="/logo.svg" alt=""><div><b>Cash Flow BD</b><small>অ্যাডমিন প্যানেল</small></div><span class="sp"></span>
+    <button class="btn line sm" id="refresh">↻ রিফ্রেশ</button><button class="btn line sm" id="logout">লগআউট</button></div>
+    <div class="wrap"><div class="tabs">${tab('dash', '📊 ড্যাশবোর্ড')}${tab('users', '👥 ইউজার')}${tab('wd', '💸 উইথড্র', p)}${tab('tasks', '📝 টাস্ক')}${tab('set', '⚙️ সেটিংস')}</div>
+    <div id="msg"></div>${inner}</div>`;
+  $('#logout').onclick = () => { tk.set(null); renderLogin(); };
+  $('#refresh').onclick = () => load(true);
+  document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { S.tab = b.dataset.tab; load(); });
+}
+
+/* ───────── dashboard ───────── */
+function bars(series, key, color, title) {
+  const W = 420, H = 150, pad = 18, n = series.length, bw = (W - pad * 2) / n, max = Math.max(1, ...series.map(s => s[key]));
+  const rects = series.map((s, i) => {
+    const h = Math.round((s[key] / max) * (H - 50)), x = pad + i * bw + 3, y = H - 26 - h;
+    return `<rect x="${x}" y="${y}" width="${bw - 6}" height="${Math.max(h, s[key] ? 2 : 0)}" rx="3" fill="${color}" opacity=".9"/>
+      ${s[key] ? `<text class="bar-val" x="${x + (bw - 6) / 2}" y="${y - 3}" text-anchor="middle">${s[key]}</text>` : ''}
+      <text class="bar-lbl" x="${x + (bw - 6) / 2}" y="${H - 12}" text-anchor="middle">${s.day.slice(8)}/${s.day.slice(5, 7)}</text>`;
+  }).join('');
+  return `<div class="card chart"><h3>${title}</h3><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${rects}</svg></div>`;
+}
+const stat = (cls, l, v, sub) => `<div class="stat ${cls}"><small>${l}</small><b>${v}</b><span>${sub || '&nbsp;'}</span></div>`;
+function dashView() {
+  const s = S.stats; if (!s) return '<div class="card muted">লোড হচ্ছে…</div>';
+  const u = s.users, a = s.ads, m = s.money, w = s.withdrawals;
+  return `
+  <h2 style="margin-top:4px">👥 ইউজার</h2>
+  <div class="grid">
+    ${stat('g', 'মোট ইউজার', u.total, `ভেরিফাইড ${u.verified} · আনভেরিফাইড ${u.unverified}`)}
+    ${stat('b', 'আজ নতুন জয়েন', u.new_today)}
+    ${stat('g', 'আজ একটিভ', u.active_today, `গত ৭ দিনে ${u.active_7d} জন`)}
+    ${stat('p', 'রেফারেল আছে এমন ইউজার', u.with_referrals, `মোট রেফারেল ${s.referrals_total}`)}
+    ${stat('r', 'ব্যান করা', u.banned)}
+  </div>
+  <h2>📺 বিজ্ঞাপন</h2>
+  <div class="grid">
+    ${stat('b', 'মোট বিজ্ঞাপন শুরু হয়েছে', a.started, `আজ ${a.today_started}`)}
+    ${stat('g', 'সম্পন্ন (দেখা হয়েছে)', a.completed, `আজ ${a.today_completed} · সফলতার হার ${a.completion_rate}%`)}
+    ${stat('r', 'বাতিল / অসম্পূর্ণ', a.cancelled, `আজ ${a.today_cancelled}`)}
+  </div>
+  <h2>🔗 স্পন্সর লিংক (Adsterra)</h2>
+  <div class="grid">
+    ${stat('b', 'মোট ক্লিক', s.sponsor.clicks, `আজ ${s.sponsor.today}`)}
+    ${stat('p', 'যত জন ক্লিক করেছে', s.sponsor.users)}
+  </div>
+  <h2>💸 উইথড্র ও টাকা</h2>
+  <div class="grid">
+    ${stat('y', 'পেন্ডিং উইথড্র', w.pending, taka(m.pending))}
+    ${stat('g', 'পরিশোধ করা (Paid)', w.paid, taka(m.paid))}
+    ${stat('r', 'বাতিল (Rejected)', w.rejected, taka(m.rejected))}
+    ${stat('', 'ইউজারদের কাছে মোট ব্যালেন্স', taka(m.user_balances), 'আপনার সম্ভাব্য দেনা')}
+    ${stat('', 'ইউজারদের মোট আয়', taka(m.total_earned))}
+  </div>
+  <h2>📈 গত ১৪ দিন</h2>
+  <div class="charts">
+    ${bars(s.series, 'joins', '#2563eb', 'নতুন ইউজার')}
+    ${bars(s.series, 'active', '#16a34a', 'একটিভ ইউজার')}
+    ${bars(s.series, 'ad_done', '#0ea5a4', 'সম্পন্ন বিজ্ঞাপন')}
+    ${bars(s.series, 'ad_cancelled', '#e5484d', 'বাতিল বিজ্ঞাপন')}
+    ${bars(s.series, 'sponsor_clicks', '#8b3fd9', 'স্পন্সর লিংক ক্লিক')}
+  </div>
+  <p class="muted" style="font-size:12px;margin-top:14px">"বাতিল বিজ্ঞাপন" = বিজ্ঞাপন শুরু হয়েছিল কিন্তু ইউজার সম্পূর্ণ দেখেনি/বন্ধ করে দিয়েছে। সব তারিখ বাংলাদেশ সময় (GMT+6)।</p>`;
+}
+
+/* ───────── users ───────── */
+function usersView() {
+  const q = S.uq, d = S.users;
+  const rows = d ? d.users.map(u => `<tr class="click" data-uid="${esc(u.id)}">
+    <td>${esc(u.id)}</td><td><b>${esc(u.name)}</b>${u.username ? `<br><span class="muted">@${esc(u.username)}</span>` : ''}</td>
+    <td>${fdate(u.joined)}</td><td>${ago(u.last_active)}</td>
+    <td>${u.banned ? '<span class="pill bad">ব্যান</span>' : u.verified ? '<span class="pill ok">ভেরিফাইড</span>' : '<span class="pill no">আনভেরিফাইড</span>'}</td>
+    <td>${u.ads_done}<span class="muted"> / ${u.ad_starts}</span></td><td style="color:var(--red)">${u.ad_cancelled}</td>
+    <td>${u.refs}</td><td><b>${taka(u.balance)}</b></td><td class="muted">${taka(u.earned)}</td></tr>`).join('') : '';
+  const pages = d ? Math.max(1, Math.ceil(d.total / d.size)) : 1;
+  return `<div class="tools"><input id="uq" placeholder="নাম / @username / ID দিয়ে খুঁজুন" value="${esc(q.q)}">
+    <select id="uf">${[['all', 'সব'], ['verified', 'ভেরিফাইড'], ['unverified', 'আনভেরিফাইড'], ['active_today', 'আজ একটিভ'], ['has_refs', 'রেফারেল আছে'], ['banned', 'ব্যান করা']].map(([k, l]) => `<option value="${k}" ${q.filter === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    <select id="us">${[['joined', 'নতুন জয়েন আগে'], ['last_active', 'সাম্প্রতিক একটিভ'], ['balance', 'বেশি ব্যালেন্স'], ['ads', 'বেশি বিজ্ঞাপন'], ['refs', 'বেশি রেফারেল'], ['earned', 'বেশি আয়']].map(([k, l]) => `<option value="${k}" ${q.sort === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    <button class="btn line" id="csv">⬇ CSV এক্সপোর্ট</button></div>
+  <div class="tw"><table><thead><tr><th>ID</th><th>নাম</th><th>জয়েনের তারিখ</th><th>শেষ একটিভ</th><th>স্ট্যাটাস</th><th>বিজ্ঞাপন (সম্পন্ন/শুরু)</th><th>বাতিল</th><th>রেফারেল</th><th>ব্যালেন্স</th><th>মোট আয়</th></tr></thead>
+  <tbody>${rows || `<tr><td colspan="10" class="muted" style="text-align:center;padding:26px">${d ? 'কোনো ইউজার পাওয়া যায়নি' : 'লোড হচ্ছে…'}</td></tr>`}</tbody></table></div>
+  <div class="pager"><span class="muted">${d ? `মোট ${d.total} জন · পেজ ${d.page}/${pages}` : ''}</span><span><button class="btn line sm" id="prev" ${q.page <= 1 ? 'disabled' : ''}>← আগের</button> <button class="btn line sm" id="next" ${q.page >= pages ? 'disabled' : ''}>পরের →</button></span></div>`;
+}
+function bindUsers() {
+  let t; const reload = () => { S.uq.page = 1; loadUsers(); };
+  $('#uq').oninput = e => { S.uq.q = e.target.value; clearTimeout(t); t = setTimeout(reload, 350); };
+  $('#uf').onchange = e => { S.uq.filter = e.target.value; reload(); };
+  $('#us').onchange = e => { S.uq.sort = e.target.value; reload(); };
+  $('#prev').onclick = () => { S.uq.page--; loadUsers(); };
+  $('#next').onclick = () => { S.uq.page++; loadUsers(); };
+  $('#csv').onclick = exportCsv;
+  document.querySelectorAll('tr[data-uid]').forEach(tr => tr.onclick = () => openUser(tr.dataset.uid));
+}
+async function loadUsers() {
+  const q = S.uq, r = await A(`users?q=${encodeURIComponent(q.q)}&filter=${q.filter}&sort=${q.sort}&page=${q.page}&size=${q.size}`);
+  S.users = r; const keep = document.activeElement && document.activeElement.id === 'uq';
+  if (S.tab === 'users') { shell(usersView()); bindUsers(); if (keep) { const i = $('#uq'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+}
+async function exportCsv() {
+  const q = S.uq, r = await A(`users?q=${encodeURIComponent(q.q)}&filter=${q.filter}&sort=${q.sort}&page=1&size=100000`);
+  const head = ['ID', 'Name', 'Username', 'Joined', 'Last active', 'Verified', 'Banned', 'Ads done', 'Ads started', 'Ads cancelled', 'Referrals', 'Balance', 'Earned'];
+  const cell = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const lines = [head.map(cell).join(',')].concat(r.users.map(u => [u.id, u.name, u.username, new Date(u.joined).toISOString(), u.last_active ? new Date(u.last_active).toISOString() : '', u.verified, u.banned, u.ads_done, u.ad_starts, u.ad_cancelled, u.refs, u.balance, u.earned].map(cell).join(',')));
+  const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cashflowbd-users.csv'; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ───────── user detail ───────── */
+async function openUser(id) {
+  const r = await A('user?id=' + encodeURIComponent(id)); if (!r.ok) return;
+  const u = r.user, kv = (l, v) => `<div><small>${l}</small><b>${v}</b></div>`;
+  $('#modal').innerHTML = `<div class="mbox"><button class="x" id="mx">✕</button>
+    <h3>${esc(u.name)} ${u.banned ? '<span class="pill bad">ব্যান</span>' : u.verified ? '<span class="pill ok">ভেরিফাইড</span>' : '<span class="pill no">আনভেরিফাইড</span>'}</h3>
+    <div class="muted">ID ${esc(u.id)}${u.username ? ' · @' + esc(u.username) : ''}</div>
+    <div class="kv">${kv('জয়েন করেছে', fdate(u.joined))}${kv('ভেরিফাই হয়েছে', fdate(u.verified_at))}${kv('শেষ একটিভ', ago(u.last_active))}${kv('ব্যালেন্স', taka(u.balance))}${kv('মোট আয়', taka(u.earned))}
+      ${kv('বিজ্ঞাপন সম্পন্ন', u.ads_done)}${kv('বিজ্ঞাপন শুরু', u.ad_starts)}${kv('বিজ্ঞাপন বাতিল', u.ad_cancelled)}${kv('আজ দেখেছে', u.ads_today)}
+      ${kv('রেফারেল', u.refs)}${kv('কে রেফার করেছে', u.inviter ? esc(u.inviter.name) + ' (' + esc(u.inviter.id) + ')' : '—')}${kv('টাস্ক সম্পন্ন', u.tasks_done)}
+      ${kv('বিজ্ঞাপন আয়', taka(u.ad_earn))}${kv('রেফারেল আয়', taka(u.ref_earn))}${kv('টাস্ক আয়', taka(u.task_earn))}${kv('বোনাস আয়', taka(u.bonus_earn))}${kv('স্ট্রিক', u.streak + ' দিন')}</div>
+    <div class="row-actions"><button class="btn ${u.banned ? '' : 'red'}" id="ban">${u.banned ? '✅ আনব্যান করুন' : '🚫 ব্যান করুন'}</button>
+      <input id="adj" type="number" placeholder="ব্যালেন্স ± (যেমন 50 বা -50)" style="padding:9px 12px;border:1px solid var(--line);border-radius:11px;flex:1;min-width:150px"><button class="btn blue" id="adjgo">ব্যালেন্স পরিবর্তন</button></div>
+    <div id="dmsg"></div>
+    <h2>উইথড্র ইতিহাস</h2>${u.withdrawals.length ? `<div class="tw"><table style="min-width:0"><tbody>${u.withdrawals.map(w => `<tr><td>#${w.id}</td><td>${w.method === 'bkash' ? 'bKash' : 'Nagad'} ${esc(w.account)}</td><td>${taka(w.amount)}</td><td>${ftime(w.ts)}</td><td><span class="pill ${w.status}">${w.status}</span></td></tr>`).join('')}</tbody></table></div>` : '<div class="muted">নেই</div>'}
+    <h2>রেফার করা ইউজার (${u.refs})</h2>${u.ref_list.length ? u.ref_list.map(x => `<div style="padding:6px 0;border-bottom:1px solid var(--line)">${esc(x.name)} <span class="muted">· ${esc(x.id)} · ${fdate(x.ts)}</span></div>`).join('') : '<div class="muted">নেই</div>'}</div>`;
+  $('#modal').classList.add('on');
+  $('#mx').onclick = closeModal;
+  const dm = (k, t) => { $('#dmsg').innerHTML = `<div class="msg ${k === 'err' ? 'err' : ''}">${esc(t)}</div>`; };
+  $('#ban').onclick = async () => { const x = await A('user/ban', { id: u.id, banned: !u.banned }); if (x.ok) { closeModal(); loadUsers(); } };
+  $('#adjgo').onclick = async () => {
+    const d = Number($('#adj').value); if (!d) return dm('err', 'সংখ্যা লিখুন');
+    const x = await A('user/balance', { id: u.id, delta: d });
+    if (x.ok) { dm('ok', 'নতুন ব্যালেন্স: ' + taka(x.balance)); loadUsers(); } else dm('err', x.error === 'negative' ? 'ব্যালেন্স ০ এর নিচে যাবে' : 'ব্যর্থ');
+  };
+}
+function closeModal() { $('#modal').classList.remove('on'); $('#modal').innerHTML = ''; }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+/* ───────── withdrawals ───────── */
+function wdView() {
+  const list = S.wd;
+  const rows = list ? list.map(w => `<tr><td>#${w.id}</td><td><b>${esc(w.name)}</b><br><span class="muted">${esc(w.uid)}${w.username ? ' · @' + esc(w.username) : ''}</span></td>
+    <td>${w.method === 'bkash' ? '<b style="color:#e2136e">bKash</b>' : '<b style="color:#f6921e">Nagad</b>'}<br><span style="user-select:all">${esc(w.account)}</span></td><td><b>${taka(w.amount)}</b></td>
+    <td>${w.refs}</td><td>${ftime(w.ts)}</td><td><span class="pill ${w.status}">${w.status === 'pending' ? 'পেন্ডিং' : w.status === 'paid' ? 'পরিশোধিত' : 'বাতিল'}</span></td>
+    <td>${w.status === 'pending' ? `<div class="row-actions"><button class="btn sm" data-paid="${w.id}">✅ Paid</button><button class="btn red sm" data-rej="${w.id}">❌ Reject</button></div>` : ftime(w.done_ts)}</td></tr>`).join('') : '';
+  return `<div class="tools"><select id="ws">${[['pending', 'পেন্ডিং'], ['paid', 'পরিশোধিত'], ['rejected', 'বাতিল'], ['all', 'সব']].map(([k, l]) => `<option value="${k}" ${S.wdStatus === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+  <div class="tw"><table><thead><tr><th>#</th><th>ইউজার</th><th>পদ্ধতি / নম্বর</th><th>পরিমাণ</th><th>রেফারেল</th><th>সময়</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+  <tbody>${rows || `<tr><td colspan="8" class="muted" style="text-align:center;padding:26px">${list ? 'কোনো রিকোয়েস্ট নেই' : 'লোড হচ্ছে…'}</td></tr>`}</tbody></table></div>
+  <p class="muted" style="font-size:12px">bKash/Nagad-এ নিজে টাকা পাঠিয়ে তারপর <b>Paid</b> চাপুন — ইউজার বট থেকে নোটিফিকেশন পাবে। <b>Reject</b> করলে টাকা ইউজারের ব্যালেন্সে ফেরত যায়।</p>`;
+}
+function bindWd() {
+  $('#ws').onchange = e => { S.wdStatus = e.target.value; loadWd(); };
+  document.querySelectorAll('[data-paid],[data-rej]').forEach(b => b.onclick = async () => {
+    const paid = !!b.dataset.paid, id = Number(b.dataset.paid || b.dataset.rej);
+    if (!confirm(paid ? `#${id} — টাকা পাঠানো হয়েছে? Paid হিসেবে মার্ক করবেন?` : `#${id} বাতিল করবেন? টাকা ইউজারকে ফেরত যাবে।`)) return;
+    b.disabled = true; const r = await A('withdrawal', { id, action: paid ? 'paid' : 'reject' });
+    toast(r.ok ? 'ok' : 'err', r.ok ? 'সম্পন্ন' : 'আগেই প্রসেস হয়েছে'); load(true);
+  });
+}
+async function loadWd() { const r = await A('withdrawals?status=' + S.wdStatus); S.wd = r.withdrawals; if (S.tab === 'wd') { shell(wdView()); bindWd(); } }
+
+/* ───────── tasks ───────── */
+function tasksView() {
+  const list = S.tasks; if (!list) return '<div class="card muted">লোড হচ্ছে…</div>';
+  const rows = list.map((t, i) => `<tr><td><b>${esc(t.title)}</b><br><span class="muted">${esc(t.id)}</span></td><td>${esc(t.type)}</td><td>${taka(t.reward)}</td>
+    <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis"><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.url)}</a>${t.chat ? `<br><span class="muted">${esc(t.chat)}</span>` : ''}</td>
+    <td><span class="pill ${t.active !== false ? 'ok' : 'no'}">${t.active !== false ? 'চালু' : 'বন্ধ'}</span></td>
+    <td><div class="row-actions"><button class="btn line sm" data-tog="${i}">${t.active !== false ? 'বন্ধ করুন' : 'চালু করুন'}</button><button class="btn red sm" data-del="${i}">মুছুন</button></div></td></tr>`).join('');
+  return `<div class="tw"><table><thead><tr><th>টাস্ক</th><th>ধরন</th><th>রিওয়ার্ড</th><th>লিংক</th><th>স্ট্যাটাস</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="6" class="muted" style="text-align:center;padding:24px">কোনো টাস্ক নেই</td></tr>'}</tbody></table></div>
+  <h2>➕ নতুন টাস্ক</h2><div class="card"><div class="form">
+    <label>ID (ইংরেজি, স্পেস ছাড়া)<input id="t_id" placeholder="yt_video_2"></label>
+    <label>ধরন<select id="t_type"><option value="telegram">Telegram (অটো যাচাই)</option><option value="youtube">YouTube</option><option value="whatsapp">WhatsApp</option><option value="tiktok">TikTok</option></select></label>
+    <label>টাইটেল<input id="t_title" placeholder="Join our channel"></label>
+    <label>বর্ণনা<input id="t_desc" placeholder="Join, then press Verify"></label>
+    <label>রিওয়ার্ড (৳)<input id="t_reward" type="number" value="20"></label>
+    <label>লিংক (https://…)<input id="t_url" placeholder="https://t.me/…"></label>
+    <label>Telegram চ্যাট (শুধু Telegram টাস্কে, যেমন @Group)<input id="t_chat" placeholder="@CashFlowBD_Community"></label></div>
+    <div style="margin-top:12px"><button class="btn" id="t_add">টাস্ক যোগ করুন</button></div>
+    <p class="muted" style="font-size:12px;margin:10px 0 0">Telegram টাস্কে বটকে ওই গ্রুপ/চ্যানেলের অ্যাডমিন বানাতে হবে। YouTube/WhatsApp/TikTok টাস্ক ১৫ সেকেন্ড টাইমারে যাচাই হয়।</p></div>`;
+}
+async function saveTasks(list, okMsg) { const r = await A('tasks', { tasks: list }); if (r.ok) { S.tasks = r.tasks; toast('ok', okMsg || 'সেভ হয়েছে'); } else toast('err', 'সেভ হয়নি: ' + (r.error || '') + ' ' + (r.id || '')); shell(tasksView()); bindTasks(); }
+function bindTasks() {
+  if (!S.tasks) return;
+  document.querySelectorAll('[data-tog]').forEach(b => b.onclick = () => { const l = S.tasks.map(x => Object.assign({}, x)); const i = Number(b.dataset.tog); l[i].active = l[i].active === false; saveTasks(l); });
+  document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { if (!confirm('টাস্কটি মুছবেন?')) return; const l = S.tasks.slice(); l.splice(Number(b.dataset.del), 1); saveTasks(l, 'মুছে ফেলা হয়েছে'); });
+  $('#t_add').onclick = () => {
+    const t = { id: $('#t_id').value.trim(), type: $('#t_type').value, title: $('#t_title').value.trim(), desc: $('#t_desc').value.trim(), reward: Number($('#t_reward').value), url: $('#t_url').value.trim(), chat: $('#t_chat').value.trim(), active: true };
+    if (!t.id || !t.title || !t.url) return toast('err', 'ID, টাইটেল ও লিংক দিন');
+    if (t.type === 'telegram' && !t.chat) return toast('err', 'Telegram টাস্কে চ্যাট (@username) দিন');
+    saveTasks(S.tasks.concat([t]), 'টাস্ক যোগ হয়েছে');
+  };
+}
+async function loadTasks() { const r = await A('tasks'); S.tasks = r.tasks; if (S.tab === 'tasks') { shell(tasksView()); bindTasks(); } }
+
+/* ───────── settings ───────── */
+const SET_FIELDS = [
+  ['AD_REWARD', 'প্রতি বিজ্ঞাপনের রিওয়ার্ড (৳)'], ['AD_DAILY_LIMIT', 'দৈনিক বিজ্ঞাপন লিমিট'], ['MIN_AD_SECONDS', 'বিজ্ঞাপন ন্যূনতম সময় (সেকেন্ড)'], ['DAILY_BONUS', 'দৈনিক বোনাস (৳)'],
+  ['REF_REWARD', 'প্রতি রেফারেলে আয় (৳)'], ['REF_BONUS', 'নতুন ইউজারের বোনাস (৳)'], ['MIN_WITHDRAW', 'সর্বনিম্ন উইথড্র (৳)'], ['MIN_REFERRALS', 'উইথড্রের জন্য ন্যূনতম রেফারেল'],
+];
+function setView() {
+  const v = S.settings; if (!v) return '<div class="card muted">লোড হচ্ছে…</div>';
+  return `<div class="card"><div class="form">${SET_FIELDS.map(([k, l]) => `<label>${l}<input data-set="${k}" type="number" step="any" min="0" value="${esc(v[k])}"></label>`).join('')}
+    <label>টিউটোরিয়াল ভিডিও লিংক (অ্যাপ খুললে পপআপ দেখায়)<input data-set="TUTORIAL_URL" placeholder="https://youtu.be/…" value="${esc(v.TUTORIAL_URL)}"></label>
+    <label>সাপোর্ট লিংক<input data-set="SUPPORT_URL" placeholder="https://t.me/…" value="${esc(v.SUPPORT_URL)}"></label>
+    <label>স্পন্সর কার্ডের লিংক (Adsterra) — ফাঁকা রাখলে কার্ড লুকিয়ে যাবে<input data-set="SPONSOR_URL" placeholder="https://…" value="${esc(v.SPONSOR_URL)}"></label></div>
+    <div style="margin-top:14px"><button class="btn" id="s_save">💾 সেভ করুন</button></div>
+    <p class="muted" style="font-size:12px;margin:10px 0 0">এখানকার পরিবর্তন সঙ্গে সঙ্গে সবার জন্য কার্যকর হয় (.env এর মান ওভাররাইড করে)। ⚠️ যে রেট আপনি সত্যিই পরিশোধ করতে পারবেন সেটাই দিন।</p></div>`;
+}
+function bindSet() {
+  const b = $('#s_save'); if (!b) return;
+  b.onclick = async () => {
+    const values = {}; document.querySelectorAll('[data-set]').forEach(i => values[i.dataset.set] = i.value);
+    const r = await A('settings', { values }); if (r.ok) { S.settings = r.values; toast('ok', 'সেভ হয়েছে ✅'); } else toast('err', 'ভুল মান: ' + (r.error || '').replace('bad_', ''));
+  };
+}
+async function loadSet() { const r = await A('settings'); S.settings = r.values; if (S.tab === 'set') { shell(setView()); bindSet(); } }
+
+/* ───────── router ───────── */
+async function load(force) {
+  try {
+    const st = await A('stats'); S.stats = st.stats;
+    if (S.tab === 'dash') shell(dashView());
+    else if (S.tab === 'users') { shell(usersView()); bindUsers(); await loadUsers(); }
+    else if (S.tab === 'wd') { shell(wdView()); bindWd(); await loadWd(); }
+    else if (S.tab === 'tasks') { shell(tasksView()); bindTasks(); await loadTasks(); }
+    else if (S.tab === 'set') { shell(setView()); bindSet(); await loadSet(); }
+  } catch (e) { /* auth handled */ }
+}
+function boot() {
+  if (!tk.get()) return renderLogin();
+  load();
+  clearInterval(timer);
+  timer = setInterval(() => { if (S.tab === 'dash' && !$('#modal.on')) load(); }, 30000);
+}
+boot();
+})();
+</script>
+</body>
+</html>
