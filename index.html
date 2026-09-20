@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Cash Flow BD</title>
+<meta name="theme-color" content="#16a34a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- Monetag (adscuit) rewarded-ad SDK — zone 11845830 -->
+<script src='//libtl.com/sdk.js' data-zone='11845830' data-sdk='show_11845830'></script>
+<style>
+:root{
+  --bg:#f2f8f4; --bg2:#e6f6ec; --card:#ffffff; --ink:#0d1b14; --muted:#8a97a6; --line:#e7eee9;
+  --g1:#0e8a43; --g2:#26c95f; --gdark:#0a6a35; --gsoft:#e8f9ef; --gtxt:#12a150;
+  --blue:#2563eb; --bsoft:#e8f0ff; --psoft:#f7e8ff; --ysoft:#fff3d1; --rsoft:#ffe6ee; --orange:#e2560f;
+  --danger:#e5484d; --dsoft:#fde7e8; --shadow:0 6px 22px rgba(15,60,35,.08);
+  --font:'Plus Jakarta Sans','Hind Siliguri','Noto Sans Bengali','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#0b1411; --bg2:#0f1d17; --card:#13201a; --ink:#ecf6ef; --muted:#8ea699; --line:#213229;
+  --gsoft:#12301f; --gtxt:#3ddc7a; --bsoft:#14213d; --psoft:#2a1a3d; --ysoft:#3a2f12; --rsoft:#3d1a26;
+  --dsoft:#3a1a1c; --shadow:0 6px 22px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.35;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;background:linear-gradient(180deg,var(--bg2) 0,var(--bg) 260px)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+input{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+.ic{flex:none;display:block}
+#root{max-width:520px;margin:0 auto;padding:14px 14px calc(118px + env(safe-area-inset-bottom))}
+.view{animation:fade .28s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* avatar */
+.av{position:relative;display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;color:#fff;font-weight:700;flex:none;box-shadow:0 0 0 3px var(--card),0 4px 12px rgba(0,0,0,.12)}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* home header */
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.hd-t{flex:1;min-width:0}
+.hd h1{font-size:21px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap;letter-spacing:-.2px}
+.hd p{color:var(--muted);font-size:13px;margin:2px 0 8px}
+.hd p b{color:var(--gtxt)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:12.5px;font-weight:700}
+.chip.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent}
+.bell{width:48px;height:48px;border-radius:50%;background:var(--gsoft);color:var(--gtxt);display:grid;place-items:center;flex:none}
+
+/* balance card */
+.bal{position:relative;display:flex;border-radius:28px;padding:20px 18px;color:#fff;overflow:hidden;min-height:170px;
+  background:radial-gradient(120% 140% at 85% 60%,#32d16b 0,#17a34e 45%,#0b6a35 100%);box-shadow:0 14px 30px rgba(14,138,67,.32)}
+.bal::after{content:"";position:absolute;right:-40px;top:-40px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.08)}
+.bal-l{position:relative;z-index:2;flex:1;min-width:0}
+.bal-lb{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;opacity:.95}
+.eye{display:grid;place-items:center;color:#fff}
+.bal-v{font-size:38px;font-weight:800;letter-spacing:-1px;margin:4px 0 8px;line-height:1.05}
+.bal-s{font-size:12.5px;opacity:.9}
+.bal-a{font-size:17px;font-weight:800;color:#fde68a;margin-bottom:12px}
+.wbtn{display:inline-flex;align-items:center;gap:9px;background:#fff;color:#0e6b35;padding:10px 12px 10px 16px;border-radius:999px;font-weight:800;font-size:14px;box-shadow:0 6px 16px rgba(0,0,0,.16)}
+.wbtn i{width:24px;height:24px;border-radius:50%;background:#dff7e7;display:grid;place-items:center;font-style:normal}
+.bal-art{position:absolute;z-index:1;right:-6px;bottom:-4px;width:56%;max-width:250px}
+.bal-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 12px rgba(0,0,0,.25))}
+.bal.compact{min-height:0;padding-bottom:14px;flex-direction:column}
+.bal.compact .bal-v{font-size:34px}
+.bal3{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.22);text-align:center}
+.bal3 b{display:block;font-size:20px;font-weight:800}
+.bal3 span{font-size:11px;opacity:.9}
+
+/* section heads */
+.sh{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px}
+.sh h2{font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px}
+.sh .tile{width:30px;height:30px;border-radius:10px;display:grid;place-items:center}
+.sh a,.sh button.lnk{color:var(--gtxt);font-weight:700;font-size:13px}
+.sh.bar h2::before{content:"";width:4px;height:18px;border-radius:4px;background:var(--gtxt)}
+
+/* summary cards */
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sc{border-radius:22px;padding:12px 12px 10px}
+.sc .ico{width:40px;height:40px;border-radius:13px;background:var(--card);display:grid;place-items:center;margin-bottom:8px;color:var(--ink)}
+.sc small{display:block;font-size:11.5px;color:var(--muted)}
+.sc b{display:block;font-size:17px;font-weight:800;margin:1px 0 6px}
+.sc svg.sp{width:100%;height:26px;display:block}
+.sc.g{background:var(--gsoft)} .sc.b{background:var(--bsoft)} .sc.p{background:var(--psoft)}
+
+/* quick actions */
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa button{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px 6px 12px;text-align:center;box-shadow:var(--shadow)}
+.qa .t{width:52px;height:52px;border-radius:17px;margin:0 auto 9px;display:grid;place-items:center}
+.qa b{display:block;font-size:12.5px;font-weight:800;line-height:1.25}
+.qa small{display:block;font-size:10.5px;color:var(--muted);margin-top:3px}
+.t-g{background:var(--gsoft);color:#12a150}.t-y{background:var(--ysoft);color:#c2790a}.t-r{background:var(--rsoft);color:#d6336c}.t-b{background:var(--bsoft);color:#2563eb}
+
+.promo{margin-top:16px;border-radius:22px;padding:16px;background:linear-gradient(135deg,var(--gsoft),var(--card));border:1px dashed #9ddfb6;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.promo b{display:block;font-size:15px}.promo small{color:var(--muted)}
+.sponsor{position:relative;margin-top:16px;border-radius:22px;padding:22px 14px 14px;background:var(--card);border:1px dashed #b5c3d3;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);width:100%;text-align:left}
+.sponsor .sp-tag{position:absolute;top:-10px;left:16px;background:#64748b;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:3px 10px;border-radius:99px}
+.sponsor .si{width:48px;height:48px;border-radius:15px;background:var(--bsoft);color:#2563eb;display:grid;place-items:center;flex:none}
+.sponsor div{flex:1;min-width:0}.sponsor b{display:block;font-size:14.5px}.sponsor small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+
+/* earn page */
+.eh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.eh h1{font-size:28px;font-weight:800;letter-spacing:-.4px}
+.eh h1 span{color:var(--gtxt)}
+.eh p{color:var(--muted);font-size:12.5px;margin:3px 0 10px}
+.eh .art{width:84px;flex:none}.eh .art svg{width:100%;height:auto;display:block}
+.streak{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:13px;color:var(--orange)}
+.filters{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;margin:0 -14px;padding-left:14px;padding-right:14px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fl{flex:none;min-width:72px;padding:12px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;gap:6px;font-size:12px;font-weight:700;color:#516070}
+.fl.on{background:var(--gsoft);border-color:#8ed9a9;color:var(--gtxt)}
+.fl .fi{width:26px;height:26px;display:grid;place-items:center;border-radius:8px}
+.note{padding:12px 14px;border-radius:14px;font-size:13.5px;font-weight:600;margin:12px 0;background:var(--gsoft);color:#0f7d3d;border:1px solid #bdebcf}
+.note.err{background:var(--dsoft);color:#b3262b;border-color:#f6c1c3}
+.tasks{display:grid;gap:12px;margin-top:10px}
+.task{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px 12px;box-shadow:var(--shadow)}
+.task .ti{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex:none}
+.task .tx{flex:1;min-width:0}
+.task h3{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--rsoft);color:#d6336c}
+.task p{font-size:11.5px;color:var(--muted);margin:3px 0 4px}
+.task .rw{font-size:12.5px;font-weight:800;color:var(--orange);display:flex;align-items:center;gap:5px}
+.coin{width:15px;height:15px;border-radius:50%;background:#f59e0b;display:inline-grid;place-items:center;color:#fff;font-size:9px;font-weight:800;flex:none}
+.ring{position:relative;width:60px;height:60px;flex:none;text-align:center}
+.ring svg{width:60px;height:60px;transform:rotate(-90deg)}
+.ring .rc{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:800;line-height:1.05;color:#4b5a69}
+.ring small{position:absolute;left:0;right:0;bottom:-15px;font-size:10px;color:var(--muted);font-weight:500}
+.task .ac{flex:none;display:grid;place-items:center;min-width:76px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 15px;border-radius:14px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-weight:800;font-size:13px;box-shadow:0 6px 14px rgba(20,160,80,.28);white-space:nowrap}
+.btn.grey{background:#a3afbf;box-shadow:none;color:#fff}
+.btn.blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6);box-shadow:0 6px 14px rgba(37,99,235,.28)}
+.btn.block{width:100%;min-height:54px;border-radius:18px;font-size:16px}
+.btn[disabled]{opacity:.7;pointer-events:none}
+.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* refer */
+.rb{position:relative;border-radius:26px;padding:20px 18px;color:#fff;overflow:hidden;min-height:150px;background:radial-gradient(120% 140% at 90% 50%,#32d16b 0,#17a34e 50%,#0b6a35 100%);box-shadow:0 14px 30px rgba(14,138,67,.3)}
+.rb h2{font-size:15px;font-weight:700;opacity:.95;max-width:62%}
+.rb h1{font-size:28px;font-weight:800;line-height:1.1;margin:6px 0 12px;max-width:62%}
+.rb .gp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.2);padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:700;max-width:70%}
+.rb .art{position:absolute;right:-8px;bottom:-6px;width:44%}.rb .art svg{width:100%;height:auto;display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.card + .card{margin-top:12px}
+.lnkbox{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 12px;margin-top:10px}
+.lnkbox span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#4b5a69}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:14px 0 12px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.share{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.share button{display:grid;gap:6px;justify-items:center;font-size:11.5px;color:#516070}
+.share i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;background:var(--gsoft);border-radius:22px;padding:16px 8px}
+.stats3 .ico{color:var(--gtxt);display:grid;place-items:center;margin-bottom:4px}
+.stats3 b{display:block;font-size:20px;font-weight:800}
+.stats3 small{font-size:11px;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:22px 10px}
+.rl{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rl:last-child{border:0}
+.rl .n{flex:1;min-width:0}.rl .n b{display:block;font-size:14px}.rl .n small{color:var(--muted);font-size:11.5px}
+.rl .v{font-weight:800;color:var(--gtxt)}
+
+/* withdraw */
+.wh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.wh h1{font-size:28px;font-weight:800;display:flex;align-items:center;gap:8px}
+.wh p{color:var(--muted);font-size:13px;margin-top:2px}
+.gbtn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:700;font-size:12.5px}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mth{position:relative;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px 8px;text-align:center;display:grid;gap:4px;justify-items:center;box-shadow:var(--shadow)}
+.mth.on{border-color:var(--g2);background:var(--gsoft)}
+.mth .chk{position:absolute;top:-9px;right:-6px;width:26px;height:26px;border-radius:50%;background:var(--g2);color:#fff;display:none;place-items:center}
+.mth.on .chk{display:grid}
+.mth b{font-size:15px}.mth small{color:var(--gtxt);font-weight:700;font-size:11px}
+.mlogo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px}
+.secure{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gsoft);color:#0f7d3d;border:1px solid #bdebcf;border-radius:14px;padding:11px;font-size:12.5px;font-weight:600;margin:14px 0 10px}
+.minref{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:var(--gsoft);border-radius:14px;padding:11px;font-size:12px;color:#3c6a51;font-weight:600}
+.minref b{color:#0f7d3d}
+label.fl2{display:block;font-weight:800;font-size:13.5px;margin:16px 0 8px}
+.inp{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:0 12px;min-height:50px}
+.inp:focus-within{border-color:var(--g2)}
+.inp input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:15px;padding:12px 0}
+.inp .cur{font-weight:800;color:var(--muted)}
+.all{background:var(--gsoft);color:var(--gtxt);font-weight:800;font-size:12.5px;padding:6px 12px;border-radius:10px}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.quick button{padding:8px 13px;border-radius:999px;background:var(--gsoft);color:var(--gtxt);font-weight:800;font-size:12.5px;border:1.5px solid transparent}
+.quick button.on{border-color:var(--g2)}
+.hist{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:6px 14px}
+.hi{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hi:last-child{border:0}
+.hi .n{flex:1}.hi .n b{display:block;font-size:14px}.hi .n small{color:var(--muted);font-size:11.5px}
+.st{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px}
+.st.pending{background:var(--ysoft);color:#b7791f}.st.paid{background:var(--gsoft);color:#0f7d3d}.st.rejected{background:var(--dsoft);color:#b3262b}
+
+/* leaderboard */
+.lbh{position:relative;border-radius:26px;padding:18px;color:#fff;overflow:hidden;background:radial-gradient(120% 140% at 90% 30%,#2ecb66 0,#12994a 48%,#0a5e30 100%);box-shadow:0 14px 30px rgba(14,138,67,.3)}
+.lbh .k{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;opacity:.95}
+.lbh h1{font-size:30px;font-weight:800;margin:4px 0 4px}
+.lbh p{font-size:12.5px;opacity:.92;margin-bottom:14px}
+.me{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:10px 12px}
+.me .n{flex:1;min-width:0}.me .n b{display:block}.me .n small{opacity:.85;font-size:11.5px}
+.me .v{text-align:right}.me .v b{font-size:20px;display:block}.me .v small{font-size:10.5px;opacity:.85}
+.pod{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px;align-items:end;margin:18px 0}
+.pd{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px 6px 12px;text-align:center;box-shadow:var(--shadow);display:grid;justify-items:center;gap:3px}
+.pd.first{padding-top:18px;border-color:#f6d365;box-shadow:0 10px 26px rgba(245,158,11,.22)}
+.pd .crown{font-size:20px;line-height:1}
+.pd .rk{font-size:12px;font-weight:800;color:var(--gtxt)}
+.pd b{font-size:13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.pd small{font-size:11px;color:var(--muted)}
+.pd .cnt{font-size:12px;font-weight:800;color:var(--gtxt)}
+.rk-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;margin-bottom:10px;box-shadow:var(--shadow)}
+.rk-row.me{border-color:var(--g2)}
+.rk-row .no{width:34px;color:var(--muted);font-weight:800;font-size:13px}
+.rk-row .n{flex:1;min-width:0}.rk-row .n b{display:block;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rk-row .n small{color:var(--muted);font-size:11.5px}
+.rk-row .v{text-align:right}.rk-row .v b{display:block;font-size:17px;color:var(--gtxt)}.rk-row .v small{font-size:10.5px;color:var(--muted)}
+
+/* profile */
+.pt{display:flex;justify-content:flex-end;margin-bottom:-6px}
+.theme{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;box-shadow:var(--shadow)}
+.ph{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ph h1{font-size:22px;font-weight:800;display:flex;align-items:center;gap:6px}
+.ph small{color:var(--muted);font-size:13px;display:block;margin:2px 0 8px}
+.lvl{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:14px}
+.lvl b{display:flex;align-items:center;gap:7px;font-size:14px}
+.lvl .bar{height:7px;border-radius:9px;background:var(--line);margin:9px 0 6px;overflow:hidden}
+.lvl .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:9px}
+.lvl small{color:var(--muted);font-size:11.5px}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 6px;text-align:center;margin:14px 0}
+.pstats .ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;margin:0 auto 6px}
+.pstats b{display:block;font-size:16px;font-weight:800}.pstats small{font-size:10px;color:var(--muted)}
+.menu{display:grid;gap:10px}
+.mi{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;text-align:left;width:100%;box-shadow:var(--shadow)}
+.mi .mt{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
+.mi div{flex:1;min-width:0}.mi b{display:block;font-size:14.5px}.mi small{color:var(--muted);font-size:11.5px}
+.mi .cv{color:var(--muted)}
+.lang-pill{background:var(--gsoft);color:var(--gtxt);font-weight:800;font-size:11.5px;padding:4px 10px;border-radius:999px}
+.enc{margin-top:14px;border-radius:22px;padding:16px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--gsoft),var(--card));border:1px solid #bdebcf}
+.enc b{display:block;font-size:15px}.enc small{color:var(--muted);font-size:12px}
+
+/* sub pages */
+.back{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;display:grid;place-items:center;box-shadow:0 6px 14px rgba(20,160,80,.28);margin-bottom:16px}
+.sp-t{font-size:28px;font-weight:800;margin-bottom:14px;letter-spacing:-.3px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.opt .fg{font-size:26px}.opt b{font-size:15px}.opt small{color:var(--muted);margin-left:6px;font-weight:500}
+.opt div{flex:1}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid #b8c3cf;display:grid;place-items:center}
+.opt.on .radio{border-color:var(--g2)}.opt.on .radio::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--g2)}
+.cbrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.cbrow:last-child{border:0}.cbrow b{display:block;font-size:14.5px}.cbrow small{color:var(--muted);font-size:12px}
+.sw{position:relative;width:48px;height:28px;border-radius:99px;background:#c4cdd7;flex:none;transition:.2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.sw.on{background:var(--g2)}.sw.on::after{left:23px}
+
+/* bottom nav */
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,520px);z-index:30;background:var(--card);border-radius:30px 30px 0 0;
+  box-shadow:0 -10px 34px rgba(10,60,30,.14);display:grid;grid-template-columns:repeat(6,1fr);padding:10px 4px calc(10px + env(safe-area-inset-bottom))}
+.nav button{display:grid;justify-items:center;gap:4px;font-size:10.5px;font-weight:600;color:#5f6b7a;min-width:0}
+.nav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav .ni{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;transition:.25s}
+.nav button.on{color:var(--gtxt);font-weight:800}
+.nav button.on .ni{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 8px 18px rgba(20,160,80,.4);transform:translateY(-8px)}
+.nav button.on span{transform:translateY(-8px)}
+:root[data-theme="dark"] .nav button{color:#93a89c}
+
+/* overlay + modal */
+#overlay{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(240,250,244,.72);backdrop-filter:blur(6px)}
+:root[data-theme="dark"] #overlay{background:rgba(8,16,12,.7)}
+#overlay.on{display:grid}
+.ovc{background:var(--card);border-radius:24px;padding:22px 34px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.16);min-width:190px}
+.ovc b{display:block;font-size:24px;font-weight:800;color:var(--gtxt);margin-bottom:10px}
+.ovc .ring2{width:28px;height:28px;border-radius:50%;border:3px solid #bdebcf;border-top-color:var(--g2);margin:0 auto 8px;animation:sp .8s linear infinite}
+.ovc small{color:var(--muted);font-size:12px}
+#modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;background:rgba(10,20,15,.55);padding:18px}
+#modal.on{display:grid}
+.mbox{position:relative;width:100%;max-width:400px;max-height:88vh;overflow:auto;background:var(--card);border-radius:26px;padding:20px;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:fade .25s ease both}
+.mx{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;background:var(--bg);display:grid;place-items:center;color:var(--muted)}
+.badge{display:inline-block;background:var(--gsoft);color:#0f7d3d;font-weight:800;font-size:10.5px;letter-spacing:.3px;padding:5px 10px;border-radius:999px;margin-bottom:10px}
+.mbox h2{font-size:21px;font-weight:800;line-height:1.3;margin-bottom:6px;padding-right:30px}
+.mbox p.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.vid{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(135deg,#052e16,#0f5132 55%,#16a34a);display:grid;place-items:center;margin-bottom:14px;width:100%}
+.vid .pl{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));display:grid;place-items:center;color:#fff;box-shadow:0 0 0 8px rgba(255,255,255,.18)}
+.vid small{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#fff;font-size:12px;font-weight:600}
+.vid img.lg{position:absolute;left:14px;top:14px;width:34px;height:34px;border-radius:10px}
+.tsheet .tr{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tsheet .tr:last-child{border:0}.tsheet .tr div{flex:1;min-width:0}.tsheet .tr b{display:block;font-size:14px}.tsheet .tr small{color:var(--orange);font-weight:700}
+.rules{padding-left:18px;margin:10px 0 0;color:#4b5a69;font-size:13.5px;line-height:1.6}
+.rules li{margin-bottom:4px}
+
+/* landing / gate */
+.center{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
+.center .box{max-width:400px;width:100%}
+.center img.lg{width:104px;height:104px;border-radius:28px;box-shadow:0 16px 34px rgba(14,138,67,.35);margin-bottom:18px}
+.center h1{font-size:30px;font-weight:800;letter-spacing:-.4px}
+.center h1 span{color:var(--gtxt)}
+.center p{color:var(--muted);margin:10px 0 22px;line-height:1.55}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 0}
+.feat div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 6px;font-size:12px;font-weight:700;display:grid;gap:6px;justify-items:center;box-shadow:var(--shadow)}
+.center .btn+.btn{margin-top:12px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="overlay"></div>
+<div id="modal"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* ───────────────── setup ───────────────── */
+const tg = window.Telegram && window.Telegram.WebApp;
+const qs = new URLSearchParams(location.search);
+const DEV = qs.get('dev') || '';
+const $ = s => document.querySelector(s);
+const root = $('#root');
+
+const S = {
+  cfg: null, me: null, tab: 'home', page: null, filter: 'all', lang: 'bn',
+  hide: false, lb: null, flash: null, busy: {},
+  wd: { method: 'bkash', account: '', amount: '' },
+  notif: null, langPick: null,
+};
+
+/* ───────────────── i18n ───────────────── */
+const I18N = {
+  bn: {
+    nav_home: 'হোম', nav_earn: 'আয়', nav_refer: 'রেফার', nav_withdraw: 'উইথড্র', nav_lb: 'লিডারবোর্ড', nav_profile: 'প্রোফাইল',
+    hello: 'হ্যালো, {name}', welcome_back: 'আবার স্বাগতম', member: 'ভেরিফাইড সদস্য', level: 'লেভেল {n}',
+    total_balance: 'মোট ব্যালেন্স', available_balance: 'উপলব্ধ ব্যালেন্স', wallet: 'ওয়ালেট',
+    earn_summary: 'আয়ের সারসংক্ষেপ', see_all: 'সব দেখুন', ad_income: 'বিজ্ঞাপন আয়', ref_income: 'রেফারেল আয়', task_income: 'টাস্ক আয়',
+    quick: 'দ্রুত ব্যবহার', qa_refer: 'রেফার করে আয়', qa_refer_s: 'বন্ধু আমন্ত্রণ করুন', qa_wd: 'উইথড্র', qa_wd_s: 'ক্যাশ আউট',
+    qa_daily: 'দৈনিক বোনাস', qa_daily_s: 'এখনই নিন', qa_tasks: 'টাস্ক', qa_tasks_s: 'সম্পন্ন করে আয়', qa_lb: 'লিডারবোর্ড', qa_lb_s: 'সেরা রেফারার',
+    sp_tag: 'বিজ্ঞাপন', sp_t: 'স্পন্সর্ড অফার দেখুন', sp_s: 'স্পন্সর করা বিজ্ঞাপন লিংক। এটি খুললে ব্যালেন্স যোগ হয় না।', sp_b: 'খুলুন',
+    promo_t: 'টাস্ক সম্পন্ন করুন', promo_s: 'বিজ্ঞাপন দেখে ও টাস্ক করে আরও আয় করুন', promo_b: 'শুরু করুন',
+    earn_h: 'আয়', earn_h2: 'পুরস্কার', earn_sub: 'টাস্ক সম্পন্ন করে আরও আয় করুন', streak: 'ধারাবাহিকতা: {n} দিন',
+    watched: 'আজ দেখা বিজ্ঞাপন', ads_left: 'বাকি বিজ্ঞাপন', tasks_left: 'বাকি টাস্ক',
+    ways: 'আয়ের উপায়', f_all: 'সব', f_video: 'ভিডিও বিজ্ঞাপন',
+    video_ad: 'ভিডিও বিজ্ঞাপন', daily_tag: 'দৈনিক', video_desc: 'বিজ্ঞাপন দেখে সঙ্গে সঙ্গে আয় করুন', per_ad: '{x} প্রতি বিজ্ঞাপন',
+    left: '{n} বাকি', watch: 'দেখুন', done_btn: 'সম্পন্ন',
+    daily_bonus: 'দৈনিক বোনাস', daily_desc: 'প্রতিদিন একবার ক্লেইম করুন', avail_now: 'এখনই পাওয়া যাবে', claim: 'ক্লেইম', claimed: '✓ নেওয়া হয়েছে', claimed_today: 'আজ নেওয়া হয়েছে',
+    yt_desc: 'YouTube সাবস্ক্রাইব, দেখুন ও টাস্ক সম্পন্ন করুন', tg_desc: 'Telegram চ্যানেল ও গ্রুপে যোগ দিন', wa_desc: 'WhatsApp চ্যানেল ও গ্রুপে যোগ দিন', tt_desc: 'TikTok ফলো, লাইক করে টাস্ক সম্পন্ন করুন',
+    avail_tasks: '{x} উপলব্ধ · {n}টি টাস্ক', no_task: 'টাস্ক নেই', see_task: 'টাস্ক দেখুন', open: 'খুলুন', verify_claim: 'ভেরিফাই', done: 'সম্পন্ন',
+    invite_earn: 'বন্ধুকে আমন্ত্রণ করুন ও আয় করুন', per_friend: 'প্রতি বন্ধুতে {x}', friend_gets: 'আপনার বন্ধু পাবে {x} বোনাস',
+    your_link: 'আপনার রেফারেল লিংক', copy: 'লিংক কপি', copied: 'লিংক কপি হয়েছে ✓', or: 'অথবা', more: 'আরও',
+    total_refs: 'মোট রেফারেল', active_refs: 'সক্রিয় রেফারেল', total_income: 'মোট আয়', top_refs: 'আপনার রেফারেল',
+    no_refs: 'এখনও রেফারেল নেই। আপনার লিংক শেয়ার করুন!',
+    share_text: '💰 {app}-এ বিজ্ঞাপন দেখে ও টাস্ক করে আয় করুন! আমার লিংকে জয়েন করুন:',
+    wd_h: 'উইথড্র', wd_sub: 'নিরাপদে আপনার আয় তুলুন', wd_guide: 'উইথড্র নির্দেশিকা', avail: 'উপলব্ধ ব্যালেন্স', withdrawable: 'উত্তোলনযোগ্য পরিমাণ',
+    method: 'উইথড্র পদ্ধতি', min_x: 'সর্বনিম্ন {x}', secure: 'উইথড্র রিকোয়েস্ট যাচাই করে নিরাপদে প্রসেস করা হয়',
+    min_refs: 'ন্যূনতম রেফারেল', your_refs: 'আপনার রেফারেল', more_needed: 'আরও {n}টি দরকার', refs_ok: 'শর্ত পূরণ হয়েছে ✓',
+    account: 'অ্যাকাউন্ট / নম্বর', account_ph: 'মোবাইল / অ্যাকাউন্ট নম্বর লিখুন', amount: 'উত্তোলনের পরিমাণ', amount_ph: 'পরিমাণ লিখুন', all: 'সব',
+    submit: 'উইথড্র রিকোয়েস্ট করুন →', refer_more: 'আরও {n}টি রেফার করুন →', go_refer: 'রেফার & আয় শুরু করুন', history: 'উইথড্র ইতিহাস', no_history: 'এখনও কোনো উত্তোলন নেই।',
+    s_pending: 'অপেক্ষমাণ', s_paid: 'সম্পন্ন', s_rejected: 'বাতিল', wd_ok: '✅ উইথড্র রিকোয়েস্ট জমা হয়েছে। যাচাই শেষে প্রসেস করা হবে।',
+    g_title: 'উইথড্র নির্দেশিকা', g1: 'সর্বনিম্ন উইথড্র {min}।', g2: 'উইথড্রের জন্য কমপক্ষে {refs}টি সফল রেফারেল প্রয়োজন।', g3: 'bKash / Nagad-এর সঠিক ১১ সংখ্যার নম্বর দিন।', g4: 'রিকোয়েস্ট যাচাই করে প্রসেস করা হয়; স্ট্যাটাস "উইথড্র ইতিহাসে" দেখা যাবে।', g5: 'একই সময়ে একটি রিকোয়েস্ট অপেক্ষমাণ থাকতে পারবে।',
+    lb_k: 'শীর্ষ রেফারার', lb_h: 'লিডারবোর্ড', lb_sub: 'আরও বন্ধু রেফার করুন এবং লিডারবোর্ডে উপরে উঠুন!', you: 'আপনি', lb_join: 'বোর্ডে উঠতে বন্ধু রেফার করুন',
+    ranking: 'র‍্যাঙ্কিং', n_users: '{n} জন ব্যবহারকারী', lb_empty: 'এখনও কেউ লিডারবোর্ডে নেই — প্রথম হয়ে যান!', lvl_refs: 'লেভেল {l} · {n} রেফারেল', refs_word: 'মোট রেফারেল',
+    lvl_line: 'লেভেল {n} · {name}', lvl_next: '{r} রেফারেল · পরবর্তী লেভেল {m}-এ', lvl_max: '{r} রেফারেল · সর্বোচ্চ লেভেল 🎉',
+    tasks_done: 'সম্পন্ন টাস্ক', bonus_claimed: 'নেওয়া বোনাস', menu_notif: 'নোটিফিকেশন সেটিংস', menu_notif_s: 'নোটিফিকেশন পছন্দ পরিচালনা করুন',
+    menu_lang: 'ভাষা', menu_lang_s: 'আপনার পছন্দের ভাষা বেছে নিন', menu_help: 'সহায়তা ও সাপোর্ট', menu_help_s: 'সাহায্য ও যোগাযোগ', menu_about: 'About {app}', menu_about_s: 'আমাদের সম্পর্কে জানুন',
+    keep_going: 'এগিয়ে চলুন, আপনি দারুণ করছেন!', keep_going_s: 'আরও রেফার করে আরও বেশি আয় করুন।',
+    lang_t: 'ভাষা নির্বাচন করুন', code: 'কোড', save: 'সংরক্ষণ করুন', lang_ok: '✅ ভাষা আপডেট হয়েছে',
+    notif_t: 'নোটিফিকেশন সেটিংস', n_push: 'পুশ নোটিফিকেশন', n_push_s: 'বটে অ্যালার্ট পান', n_wd: 'উইথড্র আপডেট', n_wd_s: 'উইথড্রের স্ট্যাটাস', n_promo: 'প্রচার ও অফার', n_promo_s: 'বোনাস ও অফার অ্যালার্ট',
+    save_pref: 'পছন্দ সংরক্ষণ করুন', saved: '✅ সংরক্ষিত',
+    about_t: 'About', about_p: 'বিজ্ঞাপন দেখে, টাস্ক সম্পন্ন করে এবং বন্ধুদের রেফার করে আয় করার প্ল্যাটফর্ম। উইথড্র রিকোয়েস্ট যাচাই করে ম্যানুয়ালি প্রসেস করা হয়।',
+    tut_badge: 'IMPORTANT VIDEO NOTICE', tut_h: 'বটের মধ্যে কীভাবে কাজ করতে হয় ফুল ভিডিওটি দেখুন', tut_s: 'ভিডিও চালাতে ট্যাপ করুন, অথবা এই নোটিশ বন্ধ করে অ্যাপে যান।', tap_play: 'Tap to play', cont: 'Continue to App',
+    gate_t: 'ভেরিফিকেশন প্রয়োজন', gate_p: 'অ্যাপ ব্যবহার করতে প্রথমে আমাদের চ্যানেলে জয়েন করুন, তারপর Verify বাটনে ক্লিক করুন।', join_ch: '📢 Join Channel', verify: '✅ Verify',
+    land_p: 'বিজ্ঞাপন দেখে, টাস্ক করে ও বন্ধুদের রেফার করে আয় করুন। এই অ্যাপটি Telegram-এর ভেতরে চালাতে হয়।', open_tg: 'Telegram-এ খুলুন',
+    f_ads: 'বিজ্ঞাপন', f_refer: 'রেফার', f_cash: 'উইথড্র',
+    opening: 'খোলা হচ্ছে {x}…', loading: 'লোড হচ্ছে…', bonus_ok: '+{x} দৈনিক বোনাস যোগ হয়েছে!', ad_ok: '+{x} বিজ্ঞাপন আয় যোগ হয়েছে!', task_ok: '+{x} টাস্ক আয় যোগ হয়েছে!',
+    e_verify: 'আগে চ্যানেলে জয়েন করে Verify করুন।', e_limit: 'আজকের বিজ্ঞাপন সীমা শেষ। কাল আবার আসুন।', e_too_fast: 'বিজ্ঞাপনটি সম্পূর্ণ দেখুন।', e_not_member: 'আপনি এখনো জয়েন করেননি।',
+    e_claimed: 'আজকের বোনাস আগেই নেওয়া হয়েছে।', e_invalid: 'অনুরোধটি বৈধ নয়, আবার চেষ্টা করুন।', e_done: 'এই টাস্ক আগেই সম্পন্ন হয়েছে।', e_network: 'নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন।',
+    e_ad_fail: 'বিজ্ঞাপন যাচাই করা যায়নি। আবার চেষ্টা করুন।', e_ad_none: 'এই মুহূর্তে কোনো বিজ্ঞাপন পাওয়া যাচ্ছে না।', e_method: 'একটি পদ্ধতি বেছে নিন।', e_account: 'সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।',
+    e_min: 'সর্বনিম্ন উইথড্র {x}।', e_refs: 'আরও {n}টি সফল রেফারেল প্রয়োজন।', e_balance: 'পর্যাপ্ত ব্যালেন্স নেই।', e_pending: 'আপনার একটি রিকোয়েস্ট আগে থেকেই অপেক্ষমাণ।', e_auth: 'অ্যাপটি Telegram থেকে খুলুন।', e_rate: 'একটু পরে আবার চেষ্টা করুন।', e_banned: 'আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে।', e_server: 'সার্ভারে সমস্যা হয়েছে।',
+  },
+  en: {
+    nav_home: 'Home', nav_earn: 'Earn', nav_refer: 'Refer', nav_withdraw: 'Withdraw', nav_lb: 'Leaderboard', nav_profile: 'Profile',
+    hello: 'Hello, {name}', welcome_back: 'Welcome back to', member: 'Verified Member', level: 'Level {n}',
+    total_balance: 'Total Balance', available_balance: 'Available Balance', wallet: 'Wallet',
+    earn_summary: 'Earnings Summary', see_all: 'See all', ad_income: 'Ad Earnings', ref_income: 'Referral Earnings', task_income: 'Task Earnings',
+    quick: 'Quick Actions', qa_refer: 'Refer & Earn', qa_refer_s: 'Invite friends', qa_wd: 'Withdraw', qa_wd_s: 'Cash out',
+    qa_daily: 'Daily Bonus', qa_daily_s: 'Claim now', qa_tasks: 'Tasks', qa_tasks_s: 'Complete & earn', qa_lb: 'Leaderboard', qa_lb_s: 'Top referrers',
+    sp_tag: 'SPONSORED', sp_t: 'View sponsored offer', sp_s: 'Sponsored ad link. Opening it does not add to your balance.', sp_b: 'Open',
+    promo_t: 'Complete tasks', promo_s: 'Watch ads and finish tasks to earn more', promo_b: 'Start',
+    earn_h: 'Earn', earn_h2: 'Rewards', earn_sub: 'Complete tasks to earn even more', streak: 'Streak: {n} days',
+    watched: 'Ads Watched Today', ads_left: 'Ads Left', tasks_left: 'Tasks Left',
+    ways: 'Ways to Earn', f_all: 'All', f_video: 'Video Ads',
+    video_ad: 'Video Ads', daily_tag: 'Daily', video_desc: 'Watch ads and earn instantly', per_ad: '{x} per ad',
+    left: '{n} left', watch: 'Watch', done_btn: 'Done',
+    daily_bonus: 'Daily Bonus', daily_desc: 'Claim once every day', avail_now: 'Available now', claim: 'Claim', claimed: '✓ Claimed', claimed_today: 'Claimed today',
+    yt_desc: 'Subscribe, watch & complete YouTube tasks', tg_desc: 'Join Telegram channels & groups', wa_desc: 'Join WhatsApp channels & groups', tt_desc: 'Follow, like & complete TikTok tasks',
+    avail_tasks: '{x} available · {n} tasks', no_task: 'No tasks', see_task: 'See tasks', open: 'Open', verify_claim: 'Verify', done: 'Done',
+    invite_earn: 'Invite friends & earn', per_friend: '{x} per friend', friend_gets: 'Your friend gets a {x} bonus',
+    your_link: 'Your referral link', copy: 'Copy link', copied: 'Link copied ✓', or: 'or', more: 'More',
+    total_refs: 'Total referrals', active_refs: 'Active referrals', total_income: 'Total earned', top_refs: 'Your referrals',
+    no_refs: 'No referrals yet. Share your link!',
+    share_text: '💰 Earn by watching ads & completing tasks on {app}! Join with my link:',
+    wd_h: 'Withdraw', wd_sub: 'Cash out your earnings safely', wd_guide: 'Withdraw guide', avail: 'Available Balance', withdrawable: 'Withdrawable amount',
+    method: 'Withdraw method', min_x: 'Min {x}', secure: 'Withdrawal requests are reviewed and processed securely',
+    min_refs: 'Minimum referrals required', your_refs: 'Your referrals', more_needed: '{n} more needed', refs_ok: 'Requirement met ✓',
+    account: 'Account / Number', account_ph: 'Enter mobile / account number', amount: 'Withdraw amount', amount_ph: 'Enter amount', all: 'All',
+    submit: 'Request withdrawal →', refer_more: 'Refer {n} more to withdraw →', go_refer: 'Open Refer & Earn', history: 'Withdrawal history', no_history: 'No withdrawals yet.',
+    s_pending: 'Pending', s_paid: 'Paid', s_rejected: 'Rejected', wd_ok: '✅ Withdrawal request submitted. It will be processed after review.',
+    g_title: 'Withdraw guide', g1: 'Minimum withdrawal is {min}.', g2: 'At least {refs} successful referrals are required.', g3: 'Enter a valid 11-digit bKash / Nagad number.', g4: 'Requests are reviewed before payout; track them in "Withdrawal history".', g5: 'Only one request can be pending at a time.',
+    lb_k: 'Top referrers', lb_h: 'Leaderboard', lb_sub: 'Refer more friends and climb the leaderboard!', you: 'You', lb_join: 'Refer friends to enter the board',
+    ranking: 'Ranking', n_users: '{n} users', lb_empty: 'Nobody is on the board yet — be the first!', lvl_refs: 'Level {l} · {n} referrals', refs_word: 'Total referrals',
+    lvl_line: 'Level {n} · {name}', lvl_next: '{r} referrals · Next level at {m}', lvl_max: '{r} referrals · Max level 🎉',
+    tasks_done: 'Tasks Done', bonus_claimed: 'Bonuses Claimed', menu_notif: 'Notification Settings', menu_notif_s: 'Manage your notification preferences',
+    menu_lang: 'Language', menu_lang_s: 'Choose your preferred language', menu_help: 'Help & Support', menu_help_s: 'Get help and contact support', menu_about: 'About {app}', menu_about_s: 'Learn more about us',
+    keep_going: "Keep going, you're doing great!", keep_going_s: 'Refer more friends to earn more rewards.',
+    lang_t: 'Choose Language', code: 'Code', save: 'Save', lang_ok: '✅ Language updated',
+    notif_t: 'Notification Settings', n_push: 'Push Notifications', n_push_s: 'Bot alerts', n_wd: 'Withdrawal Updates', n_wd_s: 'Status of your withdrawals', n_promo: 'Promotions & Offers', n_promo_s: 'Bonus & offer alerts',
+    save_pref: 'Save Preferences', saved: '✅ Saved',
+    about_t: 'About', about_p: 'A platform to earn by watching ads, completing tasks and referring friends. Withdrawal requests are reviewed and processed manually.',
+    tut_badge: 'IMPORTANT VIDEO NOTICE', tut_h: 'Watch the full video to learn how to use the bot', tut_s: 'Tap the video to play it, or close this notice to continue to the app.', tap_play: 'Tap to play', cont: 'Continue to App',
+    gate_t: 'Verification required', gate_p: 'To use the app, first join our channel and then tap Verify.', join_ch: '📢 Join Channel', verify: '✅ Verify',
+    land_p: 'Earn by watching ads, completing tasks and inviting friends. This app runs inside Telegram.', open_tg: 'Open in Telegram',
+    f_ads: 'Ads', f_refer: 'Refer', f_cash: 'Cash out',
+    opening: 'Opening {x}…', loading: 'Loading…', bonus_ok: '+{x} daily bonus credited!', ad_ok: '+{x} ad reward credited!', task_ok: '+{x} task reward credited!',
+    e_verify: 'Join the channel and verify first.', e_limit: "Today's ad limit is reached. Come back tomorrow.", e_too_fast: 'Please watch the full ad.', e_not_member: "You haven't joined yet.",
+    e_claimed: "Today's bonus is already claimed.", e_invalid: 'Invalid request, please try again.', e_done: 'This task is already completed.', e_network: 'Network problem, please try again.',
+    e_ad_fail: 'Failed to verify the ad show. Please try again.', e_ad_none: 'No ad is available right now.', e_method: 'Choose a method.', e_account: 'Enter a valid 11-digit mobile number.',
+    e_min: 'Minimum withdrawal is {x}.', e_refs: '{n} more successful referrals needed.', e_balance: 'Insufficient balance.', e_pending: 'You already have a pending request.', e_auth: 'Please open the app from Telegram.', e_rate: 'Please try again in a moment.', e_banned: 'Your account has been blocked.', e_server: 'Server error.',
+  },
+};
+const LANGS = [
+  { code: 'bn', flag: '🇧🇩', name: 'বাংলা (Bangla)' },
+  { code: 'en', flag: '🇬🇧', name: 'English' },
+];
+const t = (k, v) => {
+  let s = (I18N[S.lang] && I18N[S.lang][k]) || I18N.en[k] || k;
+  if (v) for (const x in v) s = s.split('{' + x + '}').join(v[x]);
+  return s;
+};
+const money = n => '৳' + Number(n || 0).toFixed(2);
+const bal = n => S.hide ? '৳ ••••' : money(n);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* ───────────────── icons (lucide-style) ───────────────── */
+const ICONS = {
+  home: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  earn: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  card: '<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>',
+  trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  'eye-off': '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>',
+  wallet: '<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>',
+  video: '<path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/>',
+  clip: '<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+  gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>',
+  play: '<polygon points="6 3 20 12 6 21 6 3"/>',
+  calcheck: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  copy: '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  right: '<path d="m9 18 6-6-6-6"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  trend: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+  back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  send: '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
+  msg: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  note: '<circle cx="8" cy="18" r="4"/><path d="M12 18V2l7 4"/>',
+  grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+  bolt: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  dots: '<circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/>',
+  facebook: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+};
+const ic = (n, s = 20, sw = 2) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICONS[n] || ''}</svg>`;
+const VERIFIED = '<svg class="ic" width="20" height="20" viewBox="0 0 24 24"><path fill="#1d9bf0" d="M12 1.6l2.5 1.7 3-.3 1.2 2.8 2.7 1.4-.4 3 1.6 2.6-1.9 2.4.1 3-2.9.9-1.8 2.4-2.9-.8-2.9.8-1.8-2.4-2.9-.9.1-3L2.4 12.8 4 10.2l-.4-3 2.7-1.4L7.5 3l3 .3z"/><path d="M8 12.3l2.6 2.6L16 9.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const WALLET = `<svg viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<ellipse cx="130" cy="184" rx="120" ry="24" fill="#0b5a2b" opacity=".45"/><ellipse cx="130" cy="176" rx="110" ry="21" fill="#17a04d"/>
+<ellipse cx="130" cy="170" rx="98" ry="17" fill="#35d073"/><ellipse cx="130" cy="167" rx="84" ry="13" fill="#8ff5b5" opacity=".75"/>
+<g transform="rotate(-16 150 70)"><rect x="112" y="18" width="98" height="58" rx="7" fill="#8fdc9d" stroke="#3aa65a" stroke-width="2"/><circle cx="161" cy="47" r="15" fill="#6cc884" stroke="#3aa65a" stroke-width="2"/><text x="161" y="53" text-anchor="middle" font-size="17" font-weight="700" fill="#2a8a4a">৳</text></g>
+<g transform="rotate(9 170 70)"><rect x="126" y="26" width="98" height="58" rx="7" fill="#a6e6b1" stroke="#3aa65a" stroke-width="2"/><circle cx="175" cy="55" r="15" fill="#83d296" stroke="#3aa65a" stroke-width="2"/><text x="175" y="61" text-anchor="middle" font-size="17" font-weight="700" fill="#2a8a4a">৳</text></g>
+<circle cx="92" cy="66" r="19" fill="#fbbf24"/><circle cx="92" cy="66" r="14" fill="#f59e0b"/><text x="92" y="73" text-anchor="middle" font-size="19" font-weight="800" fill="#fff7d6">৳</text>
+<circle cx="128" cy="58" r="17" fill="#fbbf24"/><circle cx="128" cy="58" r="12.5" fill="#f59e0b"/><text x="128" y="64" text-anchor="middle" font-size="17" font-weight="800" fill="#fff7d6">৳</text>
+<rect x="58" y="70" width="132" height="92" rx="15" fill="#f5f7f5"/><path d="M58 86a16 16 0 0 1 16-16h100a16 16 0 0 1 16 16v8H58z" fill="#e2e8e3"/>
+<rect x="152" y="104" width="54" height="36" rx="13" fill="#16883f"/><circle cx="175" cy="122" r="9" fill="#dff5e6"/><circle cx="175" cy="122" r="4" fill="#16883f"/>
+<g transform="translate(74 98) scale(.125)"><path d="M354 174A128 128 0 1 0 354 338" fill="none" stroke="#16883f" stroke-width="52" stroke-linecap="round"/><path d="M198 318L252 262L290 296L372 208M334 204H376V246" fill="none" stroke="#f5a30b" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg>`;
+const GIFT = `<svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<ellipse cx="100" cy="152" rx="88" ry="14" fill="#0b5a2b" opacity=".35"/><rect x="50" y="76" width="100" height="72" rx="9" fill="#1fbd5b"/><rect x="44" y="54" width="112" height="28" rx="9" fill="#3fe07f"/>
+<rect x="92" y="54" width="16" height="94" fill="#fbbf24"/><path d="M100 54C80 22 52 32 64 48c8 10 26 6 36 6zM100 54c20-32 48-22 36-6-8 10-26 6-36 6z" fill="#fbbf24"/>
+<circle cx="164" cy="44" r="15" fill="#fbbf24"/><circle cx="164" cy="44" r="11" fill="#f59e0b"/><text x="164" y="50" text-anchor="middle" font-size="15" font-weight="800" fill="#fff7d6">৳</text>
+<circle cx="34" cy="96" r="12" fill="#fbbf24"/><circle cx="34" cy="96" r="8.5" fill="#f59e0b"/><text x="34" y="101" text-anchor="middle" font-size="12" font-weight="800" fill="#fff7d6">৳</text></svg>`;
+const spark = c => `<svg class="sp" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,22 12,15 24,20 36,10 48,16 60,8 72,14 84,6 100,11" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function avatar(name, photo, size) {
+  size = size || 56;
+  const ini = (name || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase() || '?';
+  const hue = [...String(name)].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
+  const st = `width:${size}px;height:${size}px;font-size:${Math.round(size * .36)}px;background:linear-gradient(135deg,hsl(${hue} 70% 62%),hsl(${(hue + 40) % 360} 70% 50%))`;
+  return `<span class="av" style="${st}"><b>${esc(ini)}</b>${photo ? `<img src="${esc(photo)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</span>`;
+}
+
+/* ───────────────── api ───────────────── */
+async function api(path, body) {
+  const h = { 'Content-Type': 'application/json' };
+  if (tg && tg.initData) h['X-Init-Data'] = tg.initData;
+  else if (DEV) h['X-Dev-User'] = DEV;
+  try {
+    const r = await fetch(path, { method: 'POST', headers: h, body: JSON.stringify(body || {}) });
+    return await r.json();
+  } catch (e) { return { ok: false, error: 'network' }; }
+}
+const errText = r => {
+  if (!r) return t('e_network');
+  const k = 'e_' + (r.error || 'server');
+  return t(k, { x: money(r.min || (S.cfg && S.cfg.min_withdraw)), n: r.need });
+};
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} },
+};
+
+/* ───────────────── helpers ───────────────── */
+function refLink() {
+  const c = S.cfg, id = S.me.id;
+  return c.miniapp ? `https://t.me/${c.bot}/${c.miniapp}?startapp=ref_${id}` : `https://t.me/${c.bot}?start=ref_${id}`;
+}
+function openExternal(url) {
+  if (!url) return;
+  if (/^https?:\/\/(t\.me|telegram\.me)\//i.test(url) && tg && tg.openTelegramLink) tg.openTelegramLink(url);
+  else if (tg && tg.openLink) tg.openLink(url);
+  else window.open(url, '_blank');
+}
+function copyText(txt) {
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).catch(() => fallbackCopy(txt));
+  fallbackCopy(txt);
+}
+function fallbackCopy(txt) {
+  const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove();
+}
+function flash(kind, text) {
+  S.flash = { kind, text };
+  const el = $('#flash');
+  if (el) el.innerHTML = `<div class="note ${kind === 'err' ? 'err' : ''}">${esc(text)}</div>`;
+  clearTimeout(flash._t);
+  flash._t = setTimeout(() => { S.flash = null; const e = $('#flash'); if (e) e.innerHTML = ''; }, 3800);
+}
+const flashHtml = () => `<div id="flash">${S.flash ? `<div class="note ${S.flash.kind === 'err' ? 'err' : ''}">${esc(S.flash.text)}</div>` : ''}</div>`;
+const fmtDate = ts => new Date(ts).toLocaleDateString(S.lang === 'bn' ? 'bn-BD' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const tasksOf = type => (S.me.tasks || []).filter(x => x.type === type);
+
+/* ───────────────── views ───────────────── */
+function balCard(compact) {
+  const m = S.me;
+  if (compact) {
+    const left = tasksOf('telegram').concat(tasksOf('youtube'), tasksOf('whatsapp'), tasksOf('tiktok')).filter(x => !x.done).length;
+    return `<section class="bal compact"><div class="bal-l">
+      <div class="bal-lb">${t('total_balance')} <button class="eye" data-act="hide">${ic(S.hide ? 'eye-off' : 'eye', 18)}</button></div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+        <div><div class="bal-v">${bal(m.balance)}</div></div>
+        <button class="wbtn" data-act="tab" data-v="withdraw">${ic('wallet', 18)}<span>${t('wallet')}</span><i>${ic('right', 13, 3)}</i></button>
+      </div></div>
+      <div class="bal3"><div><b>${m.ads_today}</b><span>${t('watched')}</span></div><div><b>${m.ads_left}</b><span>${t('ads_left')}</span></div><div><b>${left}</b><span>${t('tasks_left')}</span></div></div></section>`;
+  }
+  return `<section class="bal"><div class="bal-l">
+      <div class="bal-lb">${t('total_balance')} <button class="eye" data-act="hide">${ic(S.hide ? 'eye-off' : 'eye', 18)}</button></div>
+      <div class="bal-v">${bal(m.balance)}</div>
+      <div class="bal-s">${t('available_balance')}</div><div class="bal-a">${bal(m.balance)}</div>
+      <button class="wbtn" data-act="tab" data-v="withdraw">${ic('wallet', 20)}<span>${t('wallet')}</span><i>${ic('right', 13, 3)}</i></button>
+    </div><div class="bal-art">${WALLET}</div></section>`;
+}
+
+function homeView() {
+  const m = S.me, c = S.cfg;
+  return `<div class="view">
+  <div class="hd">${avatar(m.name, m.photo, 60)}
+    <div class="hd-t"><h1>${t('hello', { name: esc(m.name) })} ${VERIFIED} <span>👋</span></h1>
+      <p>${t('welcome_back')} <b>${esc(c.app_name)}</b></p>
+      <div class="chips"><span class="chip on">${ic('star', 15)} ${t('member')}</span>
+      <button class="chip" data-act="tab" data-v="profile">${ic('trophy', 15)} ${t('level', { n: m.level })} ›</button></div></div>
+    <button class="bell" data-act="page" data-v="notif">${ic('bell', 22)}</button></div>
+  ${flashHtml()}
+  ${balCard(false)}
+  <div class="sh"><h2><span class="tile t-g">${ic('trend', 17)}</span>${t('earn_summary')}</h2><button class="lnk" data-act="tab" data-v="earn">${t('see_all')} ›</button></div>
+  <div class="sum">
+    <div class="sc g"><div class="ico">${ic('video', 22)}</div><small>${t('ad_income')}</small><b>${money(m.ad_earn)}</b>${spark('#22a955')}</div>
+    <div class="sc b"><div class="ico">${ic('users', 22)}</div><small>${t('ref_income')}</small><b>${money(m.ref_earn)}</b>${spark('#3b82f6')}</div>
+    <div class="sc p"><div class="ico">${ic('clip', 22)}</div><small>${t('task_income')}</small><b>${money(m.task_earn)}</b>${spark('#a855f7')}</div>
+  </div>
+  <div class="sh"><h2><span class="tile t-y">${ic('bolt', 17)}</span>${t('quick')}</h2></div>
+  <div class="qa">
+    <button data-act="tab" data-v="refer"><div class="t t-g">${ic('share', 24)}</div><b>${t('qa_refer')}</b><small>${t('qa_refer_s')}</small></button>
+    <button data-act="tab" data-v="withdraw"><div class="t t-y">${ic('wallet', 24)}</div><b>${t('qa_wd')}</b><small>${t('qa_wd_s')}</small></button>
+    <button data-act="daily"><div class="t t-r">${ic('gift', 24)}</div><b>${t('qa_daily')}</b><small>${m.daily_claimed ? t('claimed_today') : t('qa_daily_s')}</small></button>
+    <button data-act="tab" data-v="earn"><div class="t t-b">${ic('clip', 24)}</div><b>${t('qa_tasks')}</b><small>${t('qa_tasks_s')}</small></button>
+    <button data-act="tab" data-v="leaderboard"><div class="t t-y">${ic('trophy', 24)}</div><b>${t('qa_lb')}</b><small>${t('qa_lb_s')}</small></button>
+  </div>
+  <div class="promo"><div><b>${t('promo_t')}</b><small>${t('promo_s')}</small></div><button class="btn" data-act="tab" data-v="earn">${t('promo_b')}</button></div>
+  ${c.sponsor_url ? `<button class="sponsor" data-act="sponsor"><span class="sp-tag">${t('sp_tag')}</span><span class="si">${ic('gift', 24)}</span><div><b>${t('sp_t')}</b><small>${t('sp_s')}</small></div><span class="btn blue">${t('sp_b')}</span></button>` : ''}
+  </div>`;
+}
+
+const FILTERS = [
+  ['all', 'grid', 'f_all', '#12a150'], ['video', 'play', 'f_video', '#3b82f6'],
+  ['youtube', 'play', 'YouTube Task', '#ef4444'], ['telegram', 'send', 'Telegram Task', '#229ed9'],
+  ['whatsapp', 'msg', 'WhatsApp Task', '#25d366'], ['tiktok', 'note', 'TikTok Task', '#111827'],
+];
+const TT = {
+  youtube: { name: 'YouTube Task', d: 'yt_desc', bg: '#fde8e8', fg: '#ef4444', icon: 'play' },
+  telegram: { name: 'Telegram Task', d: 'tg_desc', bg: '#e3f3fb', fg: '#229ed9', icon: 'send' },
+  whatsapp: { name: 'WhatsApp Task', d: 'wa_desc', bg: '#dcf8e6', fg: '#25d366', icon: 'msg' },
+  tiktok: { name: 'TikTok Task', d: 'tt_desc', bg: '#ece9f5', fg: '#111827', icon: 'note' },
+};
+function ringSvg(done, total) {
+  const r = 25, C = 2 * Math.PI * r, p = total > 0 ? Math.min(1, done / total) : 0;
+  return `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="${r}" fill="none" stroke="#e3e9ef" stroke-width="6"/><circle cx="30" cy="30" r="${r}" fill="none" stroke="#22c55e" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(C * p).toFixed(1)} ${C.toFixed(1)}"/></svg>`;
+}
+function taskCard(o) {
+  return `<div class="task"><div class="ti" style="background:${o.bg};color:${o.fg}">${o.icon}</div>
+    <div class="tx"><h3>${o.title}${o.tag ? `<span class="tag">${o.tag}</span>` : ''}</h3><p>${o.desc}</p><div class="rw"><span class="coin">৳</span>${o.reward}</div></div>
+    <div class="ring">${ringSvg(o.done, o.total)}<div class="rc"><span>${ic('eye', 12)}<br>${o.done}/${o.total}</span></div><small>${o.sub}</small></div>
+    <div class="ac">${o.btn}</div></div>`;
+}
+function earnView() {
+  const m = S.me, c = S.cfg, f = S.filter, cards = [];
+  if (f === 'all' || f === 'video') {
+    const can = m.ads_left > 0;
+    cards.push(taskCard({
+      icon: ic('play', 26), bg: '#e1f8e9', fg: '#16a34a', title: t('video_ad'), tag: t('daily_tag'), desc: t('video_desc'),
+      reward: t('per_ad', { x: money(c.ad_reward) }), done: m.ads_today, total: c.ad_limit, sub: t('left', { n: m.ads_left }),
+      btn: S.busy.ad ? `<button class="btn" disabled><span class="spin"></span></button>` : `<button class="btn ${can ? '' : 'grey'}" data-act="watch">${ic('play', 14)} ${can ? t('watch') : t('done_btn')}</button>`,
+    }));
+  }
+  if (f === 'all') {
+    cards.push(taskCard({
+      icon: ic('calcheck', 26), bg: '#e1f8e9', fg: '#16a34a', title: t('daily_bonus'), tag: t('daily_tag'), desc: t('daily_desc'), reward: money(c.daily_bonus),
+      done: m.daily_claimed ? 1 : 0, total: 1, sub: m.daily_claimed ? t('claimed_today') : t('avail_now'),
+      btn: m.daily_claimed ? `<button class="btn grey">${t('claimed')}</button>` : `<button class="btn" data-act="daily">${t('claim')}</button>`,
+    }));
+  }
+  for (const type of ['youtube', 'telegram', 'whatsapp', 'tiktok']) {
+    if (f !== 'all' && f !== type) continue;
+    const list = tasksOf(type), done = list.filter(x => x.done).length, rem = list.length - done;
+    const avail = list.filter(x => !x.done).reduce((s, x) => s + Number(x.reward || 0), 0);
+    const tt = TT[type];
+    cards.push(taskCard({
+      icon: ic(tt.icon, 26), bg: tt.bg, fg: tt.fg, title: tt.name, desc: t(tt.d), reward: t('avail_tasks', { x: money(avail), n: rem }),
+      done, total: list.length, sub: t('left', { n: rem }),
+      btn: rem > 0 ? `<button class="btn blue" data-act="tasks" data-v="${type}">${ic('clip', 14)} ${t('see_task')}</button>`
+                   : `<button class="btn grey">${list.length ? '✓ ' + t('done') : t('no_task')}</button>`,
+    }));
+  }
+  return `<div class="view">
+  <div class="eh"><div><h1>${t('earn_h')} <span>${t('earn_h2')}</span></h1><p>${t('earn_sub')}</p>
+    <span class="streak">${ic('flame', 16)} ${t('streak', { n: m.streak })}</span></div><div class="art">${WALLET}</div></div>
+  ${balCard(true)}
+  <div class="sh bar"><h2>${t('ways')}</h2></div>
+  <div class="filters">${FILTERS.map(([k, i, l]) => `<button class="fl ${f === k ? 'on' : ''}" data-act="filter" data-v="${k}"><span class="fi">${ic(i, 18)}</span>${I18N.bn[l] ? t(l) : l}</button>`).join('')}</div>
+  ${flashHtml()}
+  <div class="tasks">${cards.join('')}</div></div>`;
+}
+
+function referView() {
+  const m = S.me, c = S.cfg, link = refLink();
+  const list = m.ref_list && m.ref_list.length
+    ? m.ref_list.map(r => `<div class="rl">${avatar(r.name, '', 40)}<div class="n"><b>${esc(r.name)}</b><small>${fmtDate(r.ts)}</small></div><div class="v">+${money(r.reward)}</div></div>`).join('')
+    : `<div class="empty">${t('no_refs')}</div>`;
+  return `<div class="view">
+  <div class="rb"><h2>${t('invite_earn')}</h2><h1>${t('per_friend', { x: money(c.ref_reward) })}</h1>
+    <span class="gp">${ic('gift', 18)} ${t('friend_gets', { x: money(c.ref_bonus) })}</span><div class="art">${GIFT}</div></div>
+  ${flashHtml()}
+  <div class="card" style="margin-top:14px"><b style="display:flex;align-items:center;gap:8px;font-size:15px">${ic('link', 18)} ${t('your_link')}</b>
+    <div class="lnkbox"><span>${esc(link)}</span><button class="btn" data-act="copy">${ic('copy', 15)} ${t('copy')}</button></div>
+    <div class="or">${t('or')}</div>
+    <div class="share">
+      <button data-act="share" data-v="wa"><i style="background:#25d366">${ic('msg', 22)}</i>WhatsApp</button>
+      <button data-act="share" data-v="tg"><i style="background:#229ed9">${ic('send', 22)}</i>Telegram</button>
+      <button data-act="share" data-v="fb"><i style="background:#1877f2">${ic('facebook', 22)}</i>Facebook</button>
+      <button data-act="share" data-v="more"><i style="background:#a855f7">${ic('dots', 22)}</i>${t('more')}</button>
+    </div></div>
+  <div class="stats3" style="margin-top:14px">
+    <div><span class="ico">${ic('users', 22)}</span><b>${m.refs}</b><small>${t('total_refs')}</small></div>
+    <div><span class="ico">${ic('check', 22)}</span><b>${m.refs}</b><small>${t('active_refs')}</small></div>
+    <div><span class="ico">${ic('wallet', 22)}</span><b>${money(m.ref_earn)}</b><small>${t('total_income')}</small></div></div>
+  <div class="sh"><h2><span class="tile t-y">${ic('users', 17)}</span>${t('top_refs')}</h2></div>
+  <div class="card">${list}</div></div>`;
+}
+
+function mlogo(k) {
+  return k === 'bkash'
+    ? `<span class="mlogo" style="background:#e2136e">b</span>`
+    : `<span class="mlogo" style="background:#f6921e">n</span>`;
+}
+function wdBtnState() {
+  const m = S.me, c = S.cfg, amt = Number(S.wd.amount);
+  const need = Math.max(0, c.min_refs - m.refs);
+  if (need > 0) return { label: t('refer_more', { n: need }), grey: true, act: 'tab', v: 'refer' };
+  const ok = /^(\+?88)?01[3-9]\d{8}$/.test(S.wd.account.replace(/[\s-]/g, '')) && amt >= c.min_withdraw && amt <= m.balance;
+  return { label: t('submit'), grey: !ok, act: 'submit', v: '' };
+}
+function withdrawView() {
+  const m = S.me, c = S.cfg, w = S.wd, need = Math.max(0, c.min_refs - m.refs), b = wdBtnState();
+  const hist = m.withdrawals && m.withdrawals.length
+    ? m.withdrawals.map(h => `<div class="hi">${mlogo(h.method)}<div class="n"><b>${money(h.amount)}</b><small>${h.method === 'bkash' ? 'bKash' : 'Nagad'} · ${esc(h.account)} · ${fmtDate(h.ts)}</small></div><span class="st ${h.status}">${t('s_' + h.status)}</span></div>`).join('')
+    : `<div class="empty">${t('no_history')}</div>`;
+  return `<div class="view">
+  <div class="wh"><div><h1>${t('wd_h')} ${ic('card', 22)}</h1><p>${t('wd_sub')}</p></div>
+    <button class="gbtn" data-act="guide">${ic('help', 16)} ${t('wd_guide')}</button></div>
+  <section class="bal"><div class="bal-l"><div class="bal-lb">${t('avail')} <button class="eye" data-act="hide">${ic(S.hide ? 'eye-off' : 'eye', 18)}</button></div>
+    <div class="bal-v">${bal(m.balance)}</div><div class="bal-s">${t('withdrawable')}</div><div class="bal-a">${bal(m.balance)}</div></div><div class="bal-art">${WALLET}</div></section>
+  <div class="sh bar"><h2>${t('method')}</h2></div>
+  <div class="methods">${['bkash', 'nagad'].map(k => `<button class="mth ${w.method === k ? 'on' : ''}" data-act="method" data-v="${k}"><span class="chk">${ic('check', 15, 3)}</span>${mlogo(k)}<b>${k === 'bkash' ? 'bKash' : 'Nagad'}</b><small>${t('min_x', { x: money(c.min_withdraw) })}</small></button>`).join('')}</div>
+  <div class="secure">${ic('shield', 18)} ${t('secure')}</div>
+  <div class="minref">${ic('users', 16)} <span>${t('min_refs')}: <b>${c.min_refs}</b></span> · <span>${t('your_refs')}: <b>${m.refs}</b></span> · <b>${need > 0 ? t('more_needed', { n: need }) : t('refs_ok')}</b></div>
+  ${flashHtml()}
+  <label class="fl2">${t('account')}</label>
+  <div class="inp"><input id="wd-acc" data-in="account" inputmode="numeric" autocomplete="off" placeholder="${t('account_ph')}" value="${esc(w.account)}"></div>
+  <label class="fl2">${t('amount')}</label>
+  <div class="inp"><span class="cur">৳</span><input id="wd-amt" data-in="amount" inputmode="decimal" autocomplete="off" placeholder="${t('amount_ph')}" value="${esc(w.amount)}"><button class="all" data-act="all">${t('all')}</button></div>
+  <div class="quick">${[100, 200, 500, 1000, 2000].map(a => `<button data-act="amt" data-v="${a}" class="${Number(w.amount) === a ? 'on' : ''}">৳${a}</button>`).join('')}</div>
+  <button id="wd-submit" class="btn block ${b.grey ? 'grey' : ''}" data-act="${b.act}" data-v="${b.v}">${b.label}</button>
+  <button class="gbtn" style="display:flex;margin:14px auto 0" data-act="tab" data-v="refer">${ic('users', 16)} ${t('go_refer')}</button>
+  <div class="sh bar"><h2>${t('history')}</h2></div><div class="hist">${hist}</div></div>`;
+}
+function refreshWd() {
+  const el = $('#wd-submit'); if (!el) return;
+  const b = wdBtnState();
+  el.className = 'btn block ' + (b.grey ? 'grey' : ''); el.dataset.act = b.act; el.dataset.v = b.v; el.textContent = b.label;
+  document.querySelectorAll('.quick button').forEach(x => x.classList.toggle('on', Number(x.dataset.v) === Number(S.wd.amount)));
+}
+
+function lbView() {
+  const d = S.lb, m = S.me;
+  if (!d) return `<div class="view"><div class="empty">${t('loading')}</div></div>`;
+  const top = d.top || [], top3 = [top[1], top[0], top[2]];
+  const pod = top.length ? `<div class="pod">${top3.map((p, i) => {
+    if (!p) return '<div></div>';
+    const first = i === 1;
+    return `<div class="pd ${first ? 'first' : ''}">${first ? '<span class="crown">👑</span>' : ''}${avatar(p.name, p.photo, first ? 64 : 52)}<span class="rk">#${p.rank}</span><b>${esc(p.name)}</b><small>${t('level', { n: p.level })}</small><span class="cnt">${p.refs} ${S.lang === 'bn' ? 'রেফারেল' : 'referrals'}</span></div>`;
+  }).join('')}</div>` : '';
+  const rows = top.map(p => `<div class="rk-row ${p.me ? 'me' : ''}"><span class="no">#${p.rank}</span>${avatar(p.name, p.photo, 44)}<div class="n"><b>${esc(p.name)}</b><small>${t('lvl_refs', { l: p.level, n: p.refs })}</small></div><div class="v"><b>${p.refs}</b><small>${t('refs_word')}</small></div></div>`).join('');
+  return `<div class="view">
+  <div class="lbh"><div class="k">${ic('trophy', 15)} ${t('lb_k')}</div><h1>${t('lb_h')}</h1><p>${t('lb_sub')}</p>
+    <div class="me">${avatar(m.name, m.photo, 44)}<div class="n"><b>${esc(m.name)} · ${t('you')}</b><small>${d.me.rank ? '#' + d.me.rank : t('lb_join')}</small></div><div class="v"><b>${m.refs}</b><small>${t('refs_word')}</small></div></div></div>
+  ${top.length ? pod : `<div class="card empty" style="margin-top:14px">${t('lb_empty')}</div>`}
+  ${top.length ? `<div class="sh"><h2><span class="tile t-g">${ic('trophy', 17)}</span>${t('ranking')}</h2><small style="color:var(--muted)">${t('n_users', { n: top.length })}</small></div>${rows}` : ''}</div>`;
+}
+
+function profileView() {
+  const m = S.me, c = S.cfg, lv = m.level_name[S.lang] || m.level_name.en;
+  const pct = m.next_at ? Math.max(0, Math.min(100, ((m.refs - m.prev_at) / (m.next_at - m.prev_at)) * 100)) : 100;
+  const item = (act, v, cls, icn, title, sub, extra) => `<button class="mi" data-act="${act}" data-v="${v}"><span class="mt ${cls}">${ic(icn, 22)}</span><div><b>${title}</b><small>${sub}</small></div>${extra || ''}<span class="cv">${ic('right', 18)}</span></button>`;
+  return `<div class="view">
+  <div class="pt"><button class="theme" data-act="theme">${ic(document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon', 18)}</button></div>
+  <div class="ph">${avatar(m.name, m.photo, 72)}<div><h1>${esc(m.name)} ${VERIFIED}</h1><small>${m.username ? '@' + esc(m.username) : 'ID ' + esc(m.id)}</small>
+    <span class="chip on">${ic('star', 15)} ${t('member')}</span></div></div>
+  <div class="lvl"><b>${ic('trophy', 16)} ${t('lvl_line', { n: m.level, name: lv })}</b><div class="bar"><i style="width:${pct}%"></i></div>
+    <small>${m.next_at ? t('lvl_next', { r: m.refs, m: m.next_at }) : t('lvl_max', { r: m.refs })}</small></div>
+  ${balCard(false)}
+  <div class="pstats">
+    <div><span class="ico t-g">${ic('users', 18)}</span><b>${m.refs}</b><small>${t('total_refs')}</small></div>
+    <div><span class="ico t-b">${ic('calcheck', 18)}</span><b>${m.tasks_done}</b><small>${t('tasks_done')}</small></div>
+    <div><span class="ico" style="background:var(--psoft);color:#a855f7">${ic('gift', 18)}</span><b>${m.bonus_claimed}</b><small>${t('bonus_claimed')}</small></div>
+    <div><span class="ico t-y">${ic('wallet', 18)}</span><b>${money(m.earned)}</b><small>${t('total_income')}</small></div></div>
+  <div class="menu">
+    ${item('page', 'notif', 't-g', 'bell', t('menu_notif'), t('menu_notif_s'))}
+    ${item('page', 'lang', 't-b', 'globe', t('menu_lang'), t('menu_lang_s'), `<span class="lang-pill">${S.lang === 'bn' ? 'বাংলা' : 'English'}</span>`)}
+    ${item('help', '', 't-y', 'help', t('menu_help'), t('menu_help_s'))}
+    ${item('about', '', 't-r', 'info', t('menu_about', { app: esc(c.app_name) }), t('menu_about_s'))}
+  </div>
+  <div class="enc"><div style="flex:1"><b>${t('keep_going')}</b><small>${t('keep_going_s')}</small></div><span style="color:var(--gtxt)">${ic('shield', 44, 1.6)}</span></div></div>`;
+}
+
+function langView() {
+  const pick = S.langPick || S.lang;
+  return `<div class="view"><button class="back" data-act="tab" data-v="profile">${ic('back', 22)}</button>
+  <h1 class="sp-t">${t('lang_t')}</h1>${flashHtml()}
+  ${LANGS.map(l => `<button class="opt ${pick === l.code ? 'on' : ''}" data-act="langpick" data-v="${l.code}"><span class="fg">${l.flag}</span><div><b>${l.name}</b><small>${t('code')}: ${l.code}</small></div><span class="radio"></span></button>`).join('')}
+  <button class="btn block" style="margin-top:8px" data-act="langsave">${t('save')}</button></div>`;
+}
+function notifView() {
+  const n = S.notif;
+  const row = (k, a, b) => `<div class="cbrow"><div><b>${a}</b><small>${b}</small></div><button class="sw ${n[k] ? 'on' : ''}" data-act="ntoggle" data-v="${k}" aria-label="${a}"></button></div>`;
+  return `<div class="view"><button class="back" data-act="tab" data-v="profile">${ic('back', 22)}</button>
+  <h1 class="sp-t">${t('notif_t')}</h1>${flashHtml()}
+  <div class="card" style="padding:6px 14px">${row('push', t('n_push'), t('n_push_s'))}${row('withdraw', t('n_wd'), t('n_wd_s'))}${row('promo', t('n_promo'), t('n_promo_s'))}</div>
+  <button class="btn block" style="margin-top:16px" data-act="notifsave">${t('save_pref')}</button></div>`;
+}
+
+function landingView() {
+  const c = S.cfg || { app_name: 'Cash Flow BD', bot: 'CashFlowBD24_Bot' };
+  return `<div class="center"><div class="box"><img class="lg" src="/logo.svg" alt="">
+    <h1>Cash Flow <span>BD</span></h1><p>${t('land_p')}</p>
+    <button class="btn block" data-act="opentg">${ic('send', 20)} ${t('open_tg')}</button>
+    <div class="feat"><div>${ic('video', 24)}${t('f_ads')}</div><div>${ic('users', 24)}${t('f_refer')}</div><div>${ic('wallet', 24)}${t('f_cash')}</div></div></div></div>`;
+}
+function gateView() {
+  return `<div class="center"><div class="box"><img class="lg" src="/logo.svg" alt="">
+    <h1>${t('gate_t')}</h1><p>${t('gate_p')}</p>${flashHtml()}
+    <button class="btn block" data-act="join">${t('join_ch')}</button>
+    <button class="btn block" data-act="verify" id="verify-btn">${t('verify')}</button></div></div>`;
+}
+
+const NAV = [['home', 'home', 'nav_home'], ['earn', 'earn', 'nav_earn'], ['refer', 'users', 'nav_refer'], ['withdraw', 'card', 'nav_withdraw'], ['leaderboard', 'trophy', 'nav_lb'], ['profile', 'user', 'nav_profile']];
+function navHtml() {
+  const cur = S.page ? 'profile' : S.tab;
+  return `<nav class="nav">${NAV.map(([k, i, l]) => `<button class="${cur === k ? 'on' : ''}" data-act="tab" data-v="${k}"><span class="ni">${ic(i, 22)}</span><span>${t(l)}</span></button>`).join('')}</nav>`;
+}
+
+/* ───────────────── render / routing ───────────────── */
+function render() {
+  if (!S.me) return;
+  let v;
+  if (S.page === 'lang') v = langView();
+  else if (S.page === 'notif') v = notifView();
+  else v = ({ home: homeView, earn: earnView, refer: referView, withdraw: withdrawView, leaderboard: lbView, profile: profileView }[S.tab] || homeView)();
+  root.innerHTML = v + navHtml();
+  if (tg && tg.BackButton) { try { S.page ? tg.BackButton.show() : tg.BackButton.hide(); } catch (_) {} }
+}
+function showOverlay(label) {
+  const o = $('#overlay');
+  o.innerHTML = `<div class="ovc"><b>${esc(S.cfg ? S.cfg.app_name.replace(/\s+/g, '') : 'CashFlowBD')}</b><div class="ring2"></div><small>${t('opening', { x: label })}</small></div>`;
+  o.classList.add('on');
+}
+const hideOverlay = () => $('#overlay').classList.remove('on');
+
+function go(tab, page) {
+  const names = { home: 'nav_home', earn: 'nav_earn', refer: 'nav_refer', withdraw: 'nav_withdraw', leaderboard: 'nav_lb', profile: 'nav_profile' };
+  const changed = tab !== S.tab || (page || null) !== S.page;
+  S.page = page || null;
+  if (page === 'notif') S.notif = Object.assign({}, S.me.notif);
+  if (page === 'lang') S.langPick = S.lang;
+  if (!changed) { window.scrollTo(0, 0); return render(); }
+  S.tab = tab;
+  if (!page) { showOverlay(t(names[tab])); }
+  setTimeout(async () => {
+    if (tab === 'leaderboard' && !page) { S.lb = null; render(); S.lb = await api('/api/leaderboard'); }
+    if (tab === 'earn' || tab === 'withdraw' || tab === 'refer' || tab === 'profile') { const r = await api('/api/me'); if (r.ok) S.me = r.user; }
+    window.scrollTo(0, 0); render(); hideOverlay();
+    if (tab === 'leaderboard' && !page) render();
+  }, page ? 0 : 320);
+}
+
+/* ───────────────── modal ───────────────── */
+function openModal(html) { const m = $('#modal'); m.innerHTML = `<div class="mbox"><button class="mx" data-act="closem">${ic('x', 18)}</button>${html}</div>`; m.classList.add('on'); }
+function closeModal() { const m = $('#modal'); m.classList.remove('on'); m.innerHTML = ''; }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+function tutorialModal() {
+  const url = S.cfg.tutorial_url;
+  openModal(`<span class="badge">${t('tut_badge')}</span><h2>${t('tut_h')}</h2><p class="sub">${t('tut_s')}</p>
+    <div class="vid" data-act="tutorial"><img class="lg" src="/icon-192.png" alt=""><span class="pl">${ic('play', 26)}</span><small>${t('tap_play')}</small></div>
+    <button class="btn block" data-act="closem">${t('cont')}</button>`);
+}
+
+/* ───────────────── actions ───────────────── */
+async function watchAd() {
+  if (S.busy.ad) return;
+  const m = S.me;
+  if (m.ads_left <= 0) return flash('err', t('e_limit'));
+  S.busy.ad = true; render();
+  const done = () => { S.busy.ad = false; render(); };
+  const s = await api('/api/ad/start');
+  if (!s.ok) { done(); return flash('err', errText(s)); }
+  let shown = false;
+  const started = Date.now();
+  try {
+    const fn = window['show_11845830'];
+    if (typeof fn === 'function') { await fn({ ymid: s.nonce }); shown = true; }
+    else if (S.cfg.dev) { await new Promise(r => setTimeout(r, (s.min_seconds + 1) * 1000)); shown = true; }  // dev-only simulation
+  } catch (e) { shown = false; }
+  if (!shown) { done(); return flash('err', typeof window['show_11845830'] === 'function' ? t('e_ad_fail') : t('e_ad_none')); }
+  const wait = Math.max(0, s.min_seconds * 1000 - (Date.now() - started));
+  if (wait) await new Promise(r => setTimeout(r, wait + 150));
+  let r = null;
+  for (let i = 0; i < 8; i++) {
+    r = await api('/api/ad/complete', { nonce: s.nonce });
+    if (!r.pending) break;
+    await new Promise(x => setTimeout(x, 1500));
+  }
+  S.busy.ad = false;
+  if (r && r.ok) { S.me = r.user; render(); flash('ok', t('ad_ok', { x: money(r.reward) })); }
+  else { render(); flash('err', r && r.pending ? t('e_ad_fail') : errText(r)); }
+}
+async function claimDaily() {
+  const r = await api('/api/daily');
+  if (r.ok) { S.me = r.user; render(); flash('ok', t('bonus_ok', { x: money(r.reward) })); }
+  else flash('err', errText(r));
+}
+function tasksSheet(type) {
+  const list = tasksOf(type);
+  openModal(`<h2>${TT[type].name}</h2><p class="sub">${t(TT[type].d)}</p><div class="tsheet">${list.map(x => `<div class="tr"><div><b>${esc(x.title)}</b><small>${money(x.reward)}</small></div>${x.done
+    ? `<button class="btn grey">✓ ${t('done')}</button>`
+    : `<button class="btn grey" data-act="topen" data-v="${esc(x.id)}" style="background:#64748b">${t('open')}</button><button class="btn" data-act="tclaim" data-v="${esc(x.id)}">${t('verify_claim')}</button>`}</div>`).join('') || `<div class="empty">${t('no_task')}</div>`}</div>`);
+}
+async function taskOpen(id) {
+  const x = S.me.tasks.find(y => y.id === id); if (!x) return;
+  await api('/api/task/start', { id }); openExternal(x.url);
+}
+async function taskClaim(id, el) {
+  el.disabled = true;
+  const r = await api('/api/task/claim', { id });
+  if (r.ok) { S.me = r.user; closeModal(); render(); flash('ok', t('task_ok', { x: money(r.reward) })); }
+  else { el.disabled = false; closeModal(); flash('err', errText(r)); }
+}
+function shareTo(kind) {
+  const txt = t('share_text', { app: S.cfg.app_name }), link = refLink();
+  if (kind === 'wa') return openExternal('https://wa.me/?text=' + encodeURIComponent(txt + ' ' + link));
+  if (kind === 'tg') return openExternal('https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(txt));
+  if (kind === 'fb') return openExternal('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(link));
+  if (navigator.share) navigator.share({ text: txt, url: link }).catch(() => {});
+  else { copyText(txt + ' ' + link); flash('ok', t('copied')); }
+}
+async function submitWithdraw(el) {
+  const w = S.wd; if (el.classList.contains('grey')) {
+    const m = S.me, c = S.cfg, amt = Number(w.amount);
+    if (!/^(\+?88)?01[3-9]\d{8}$/.test(w.account.replace(/[\s-]/g, ''))) return flash('err', t('e_account'));
+    if (!(amt >= c.min_withdraw)) return flash('err', t('e_min', { x: money(c.min_withdraw) }));
+    if (amt > m.balance) return flash('err', t('e_balance'));
+    return;
+  }
+  el.classList.add('grey');
+  const r = await api('/api/withdraw', { method: w.method, account: w.account, amount: Number(w.amount) });
+  if (r.ok) { S.me = r.user; S.wd.amount = ''; render(); flash('ok', t('wd_ok')); }
+  else { refreshWd(); flash('err', errText(r)); }
+}
+function guideModal() {
+  const c = S.cfg;
+  openModal(`<h2>${t('g_title')}</h2><ul class="rules"><li>${t('g1', { min: money(c.min_withdraw) })}</li><li>${t('g2', { refs: c.min_refs })}</li><li>${t('g3')}</li><li>${t('g4')}</li><li>${t('g5')}</li></ul>`);
+}
+
+const ACT = {
+  tab: v => go(v),
+  page: v => go('profile', v),
+  hide: () => { S.hide = !S.hide; render(); },
+  filter: v => { S.filter = v; render(); },
+  watch: () => watchAd(),
+  daily: () => claimDaily(),
+  tasks: v => tasksSheet(v),
+  topen: v => taskOpen(v),
+  tclaim: (v, el) => taskClaim(v, el),
+  copy: () => { copyText(refLink()); flash('ok', t('copied')); },
+  share: v => shareTo(v),
+  method: v => { S.wd.method = v; document.querySelectorAll('.mth').forEach(x => x.classList.toggle('on', x.dataset.v === v)); },
+  amt: v => { S.wd.amount = v; const i = $('#wd-amt'); if (i) i.value = v; refreshWd(); },
+  all: () => { S.wd.amount = String(Math.floor(S.me.balance)); const i = $('#wd-amt'); if (i) i.value = S.wd.amount; refreshWd(); },
+  submit: (v, el) => submitWithdraw(el),
+  guide: () => guideModal(),
+  sponsor: () => { api('/api/sponsor/click'); openExternal(S.cfg.sponsor_url); },
+  theme: () => {
+    const d = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = d; store.set('cf_theme', d); applyChrome(); render();
+  },
+  help: () => { const u = S.cfg.support_url; if (u) openExternal(u); else openModal(`<h2>${t('menu_help')}</h2><p class="sub">${t('menu_help_s')}</p>`); },
+  about: () => openModal(`<h2>${t('about_t')} ${esc(S.cfg.app_name)}</h2><p class="sub" style="font-size:14px;line-height:1.6">${t('about_p')}</p>`),
+  langpick: v => { S.langPick = v; render(); },
+  langsave: async () => {
+    const code = S.langPick || S.lang, r = await api('/api/settings', { lang: code });
+    S.lang = code; document.documentElement.lang = code; if (r.ok) S.me = r.user; render(); flash('ok', t('lang_ok'));
+  },
+  ntoggle: v => { S.notif[v] = !S.notif[v]; const b = document.querySelector(`[data-act="ntoggle"][data-v="${v}"]`); if (b) b.classList.toggle('on', S.notif[v]); },
+  notifsave: async () => { const r = await api('/api/settings', { notif: S.notif }); if (r.ok) S.me = r.user; flash('ok', t('saved')); },
+  closem: () => closeModal(),
+  tutorial: () => { openExternal(S.cfg.tutorial_url); },
+  opentg: () => openExternal(`https://t.me/${(S.cfg || {}).bot || 'CashFlowBD24_Bot'}`),
+  join: () => openExternal(S.cfg.channel_url),
+  verify: async el => {
+    const r = await api('/api/verify');
+    if (r.ok) { S.me = r.user; start(); } else flash('err', errText(r));
+  },
+};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const fn = ACT[el.dataset.act]; if (fn) fn(el.dataset.v, el, e);
+});
+document.addEventListener('input', e => {
+  const k = e.target.dataset && e.target.dataset.in; if (!k) return;
+  S.wd[k] = e.target.value; refreshWd();
+});
+if (tg && tg.BackButton) { try { tg.BackButton.onClick(() => go('profile')); } catch (_) {} }
+
+/* ───────────────── boot ───────────────── */
+function applyChrome() {
+  if (!tg) return;
+  const dark = document.documentElement.dataset.theme === 'dark';
+  try { tg.setHeaderColor(dark ? '#0b1411' : '#ffffff'); tg.setBackgroundColor(dark ? '#0b1411' : '#f2f8f4'); } catch (_) {}
+}
+function start() {
+  S.tab = 'home';
+  const want = qs.get('tab');
+  render();
+  if (want && ['earn', 'refer', 'withdraw', 'leaderboard', 'profile'].includes(want)) go(want);
+  if (S.cfg.tutorial_url && !store.get('cf_tut_seen')) { store.set('cf_tut_seen', '1'); tutorialModal(); }
+}
+async function boot() {
+  const saved = store.get('cf_theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  if (tg) { try { tg.ready(); tg.expand(); } catch (_) {} }
+  applyChrome();
+  try { S.cfg = await (await fetch('/api/config')).json(); } catch (_) { S.cfg = null; }
+  document.title = (S.cfg && S.cfg.app_name) || 'Cash Flow BD';
+  const inTelegram = !!(tg && tg.initData);
+  if (!S.cfg || (!inTelegram && !(DEV && S.cfg.dev))) { root.innerHTML = landingView(); return; }
+  const r = await api('/api/me');
+  if (!r.ok && r.error === 'banned') { root.innerHTML = `<div class="center"><div class="box"><img class="lg" src="/logo.svg" alt=""><h1>🚫</h1><p>${t('e_banned')}</p></div></div>`; return; }
+  if (!r.ok) { root.innerHTML = landingView(); return; }
+  S.me = r.user; S.lang = r.user.lang || 'bn'; document.documentElement.lang = S.lang;
+  if (r.need_verify) { root.innerHTML = gateView(); return; }
+  start();
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState !== 'visible' || !S.me || S.busy.ad) return;
+    const x = await api('/api/me'); if (x.ok && !x.need_verify) { S.me = x.user; if (!$('#modal.on') && !document.activeElement.matches('input')) render(); }
+  });
+}
+boot();
+})();
+</script>
+</body>
+</html>
