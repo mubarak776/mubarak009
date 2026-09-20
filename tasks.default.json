@@ -1,0 +1,21 @@
+[
+  {
+    "id": "tg_group",
+    "type": "telegram",
+    "title": "Join our Telegram group",
+    "desc": "Join the community group, then press Verify",
+    "reward": 20,
+    "url": "https://t.me/CashFlowBD_Community",
+    "chat": "@CashFlowBD_Community",
+    "active": true
+  },
+  {
+    "id": "yt_sub",
+    "type": "youtube",
+    "title": "Subscribe to our YouTube channel",
+    "desc": "Open the channel, subscribe, then come back and press Verify",
+    "reward": 20,
+    "url": "https://www.youtube.com/@OnlineIncomeBD-s2x",
+    "active": true
+  }
+]
